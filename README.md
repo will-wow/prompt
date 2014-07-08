@@ -1,4 +1,4 @@
 prompt
 ======
 
-A webapp that scrolls any text file at a steady rate.
+A teleprompter for your text files. Use it to scroll through a song or speech at a steady rate.

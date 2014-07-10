@@ -1,0 +1,6 @@
+<form role="form" ng-submit="new.addPrompt(main.prompts)">
+    <input type="text" ng-model="new.prompt.name" placeholder="Name" class="form-control">
+    <input type="text" ng-model="new.prompt.time" placeholder="Length in milliseconds" class="form-control">
+    <textarea ng-model="new.prompt.body" placeholder="Paste your text here." class="form-control"></textarea>
+    <input type="submit" class="btn btn-primary" value="Add">
+</form>

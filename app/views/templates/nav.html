@@ -1,0 +1,33 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="tw">
+                <a class="navbar-brand" href="/">prompt</a>
+            </span>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <!-- New -->
+                <li>
+                    <a href="#/load">New</a>
+                </li>
+                <!-- Prompts -->
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Prompts <b class="caret"></b></a>
+                    <ul class="dropdown-menu" id="users">
+                        <li ng-repeat="prompt in main.prompts track by $index">
+                            <a ng-href="#/load/{{ $index }}">{{ prompt.name }}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

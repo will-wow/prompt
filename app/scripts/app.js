@@ -11,17 +11,36 @@
 angular
   .module('promptApp', [
     'ngRoute',
-    'ngSanitize'
+    'ngSanitize',
+    'duScroll',
+    'LocalStorageModule'
   ])
+  .config(['localStorageServiceProvider', function(localStorageServiceProvider){
+    localStorageServiceProvider.setPrefix('ls');
+  }])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/about.html'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
+      .when('/load', {
+        templateUrl: 'views/load.html',
+        controller: 'NewCtrl',
+        controllerAs: 'new',
+      }) 
+      .when('/load/:promptId', {
+        templateUrl: 'views/edit.html',
+        controller: 'EditCtrl',
+        controllerAs: 'edit'
+      })
+      .when('/play', {
+        templateUrl: 'views/play.html',
+        controller: 'ChooseCtrl'
+      })
+      .when('/play/:promptId', {
+        templateUrl: 'views/play.html',
+        controller: 'PlayCtrl',
+        controllerAs: 'play'
       })
       .otherwise({
         redirectTo: '/'

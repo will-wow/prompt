@@ -1,0 +1,9 @@
+<form role="form" id="play">
+    <input type="button" class="btn btn-success" value="Start" ng-click="scroller.play(play.prompt.time)">
+    <input type="button" class="btn btn-warning" value="Pause" ng-click="scroller.pause()">
+    <input type="button" class="btn btn-danger" value="Top" ng-click="scroller.top()">
+    <input type="button" class="btn btn-info" value="Restart" ng-click="scroller.restart(play.prompt.time)">
+    <h3 id="name">{{ play.prompt.name }}</h3>
+    <p id="time"><em>{{ play.prompt.time | date:'h:mm'}}</em></p>
+    <div id="body-container"><p id="body">{{ play.prompt.body }}</p></div>
+</form>

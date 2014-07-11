@@ -8,10 +8,14 @@
  * Controller of the promptApp
  */
 angular.module('promptApp')
-.controller('PlayCtrl', ['$routeParams', 'Prompts', function($routeParams, Prompts) {
+.controller('PlayCtrl', ['$routeParams', '$location', 'Prompts', function($routeParams, $location, Prompts) {
     var scope = this,
         promptIndex = Number($routeParams.promptId);
     
     // Access the requested prompt
     scope.prompt = Prompts[promptIndex];
+    
+    scope.editPrompt = function () {
+        $location.path('/load/' + promptIndex);
+    };
 }]);

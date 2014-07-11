@@ -1,4 +1,4 @@
-$icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
 // endbower
@@ -13,17 +13,28 @@ body {height: 100%;}
     margin: 0 auto -60px;
 }
 
+.button-row {
+    padding-bottom: 10px;
+
+    .button-right {
+        float: right;
+    }
+};
+
+input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+}
+
 .footer {height: 60px;}
 
-#play {
+form#play {
     #body-container {
         overflow: auto;
-        max-height: 500px;
     }
+    #time {display: inline-block};
     #body {
         margin:0;
         padding:0;
         font-family: monospace;
     }
 }
-

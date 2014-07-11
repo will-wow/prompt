@@ -1,7 +1,10 @@
-<form role="form">
-    <input type="text" ng-model="edit.prompt.name" placeholder="Name" class="form-control">
-    <input type="text" ng-model="edit.prompt.time" placeholder="Length in milliseconds" class="form-control">
-    <textarea ng-model="edit.prompt.body" placeholder="Paste your text here." class="form-control"></textarea>
-    <input type="button" class="btn btn-primary" value="Play" ng-click="edit.playPrompt()">
-    <input type="button" class="btn btn-danger" value="Delete" ng-click="edit.removePrompt()">
+<form role="form" name="form" novalidate>
+    <div class="button-row">
+        <input type="button" class="btn btn-danger" value="Delete" ng-click="edit.deletePrompt()">
+        <input type="button" class="btn btn-info button-right" ng-disabled="form.$invalid" value="Play" ng-click="edit.playPrompt()">
+    </div>
+    <!-- Info -->
+    <input type="text" ng-model="edit.prompt.name" placeholder="Name" class="form-control" name="name" required>
+    <input type="number" ng-model="edit.prompt.time" placeholder="Length in milliseconds" class="form-control" name="time" min="1" integer required>
+    <textarea ng-model="edit.prompt.body" placeholder="Body." class="form-control" full-height name="body" required></textarea>
 </form>

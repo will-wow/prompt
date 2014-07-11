@@ -13,7 +13,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'duScroll',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'angularMoment'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider){
     localStorageServiceProvider.setPrefix('ls');

@@ -226,7 +226,9 @@ module.exports = function (grunt) {
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs'],
+              //js: ['concat', 'uglifyjs'],
+              // Taking out uglify, it's breaking something in vendors
+              js: ['concat'],
               css: ['cssmin']
             },
             post: {}
@@ -388,6 +390,21 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+    
+    buildcontrol: {
+        options: {
+          dir: 'dist',
+          commit: true,
+          push: true,
+          message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+        },
+        prod: {
+          options: {
+            remote: 'git@github.com:whenther/prompt.git',
+            branch: 'prod'
+          }
+        }
     }
   });
 
@@ -431,7 +448,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'cdnify',
     'cssmin',
-    'uglify',
+    //'uglify',
     'filerev',
     'usemin',
     'htmlmin'

@@ -1,0 +1,8 @@
+<widget id="net.whentheresawill.prompt" version="0.0.1">
+    <name>prompt</name>
+    <description>A teleprompter for the 21st Century</description>
+    <author email="will@whentheresawill.net"
+    href="http://whentheresawill.net">Will</author>
+    <content src="index.html" />
+    <preference name="permissions" value="none" />
+</widget>

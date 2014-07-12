@@ -1,17 +1,23 @@
-$icon-font-path: "../fonts/bootstrap/";
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
 // endbower
+$fa-font-path: "/bower_components/font-awesome/fonts";
+@import "font-awesome/scss/font-awesome";
 
 html {height: 100%;}
 body {height: 100%;}
 #main {height: 100%;}
 .view {padding: 71px 0;}
 
+.inline{display: inline-block;}
+.right{float: right;}
+
 .wrap {
     min-height: 100%;
     margin: 0 auto -60px;
 }
+
+.navbar-brand {height: 20px;}
 
 .button-row {
     padding-bottom: 10px;
@@ -36,5 +42,21 @@ form#play {
         margin:0;
         padding:0;
         font-family: monospace;
+    }
+}
+
+div#all {
+    .big-btn-container {
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .prompt-container {
+        padding: 10px;
+    }
+    .prompt {
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #F0F0F0;
     }
 }

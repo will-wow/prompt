@@ -1,6 +1,8 @@
 <form role="form" name="form" ng-submit="new.addPrompt(main.prompts)" novalidate>
     <div class="button-row">
-        <input type="submit" class="btn btn-primary" ng-disabled="form.$invalid" value="Add">
+        <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid">
+            <i class="fa fa-plus"></i> Add
+        </button>
     </div>
     <!-- Info -->
     <input type="text" ng-model="new.prompt.name" placeholder="Name" class="form-control" required>

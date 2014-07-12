@@ -22,7 +22,12 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/about.html'
+        redirectTo: '/prompts'
+      })
+      .when('/prompts', {
+        templateUrl: 'views/all.html',
+        controller: 'AllCtrl',
+        controllerAs: 'all'
       })
       .when('/load', {
         templateUrl: 'views/load.html',
@@ -42,6 +47,9 @@ angular
         templateUrl: 'views/play.html',
         controller: 'PlayCtrl',
         controllerAs: 'play'
+      })
+      .when('/about', {
+        templateUrl: 'views/about.html'
       })
       .otherwise({
         redirectTo: '/'

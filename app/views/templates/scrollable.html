@@ -1,12 +1,12 @@
 <form role="form" id="play">
     <div class="button-row">
-        <input type="button" class="btn btn-success" value="Start" ng-disabled="scroller.scrollStarted() && !scroller.scrollPaused()" ng-click="scroller.play(play.prompt.time)">
-        <input type="button" class="btn btn-warning" value="Pause" ng-disabled="!scroller.scrollStarted() || scroller.scrollPaused()" ng-click="scroller.pause()">
-        <input type="button" class="btn btn-danger" value="Top" ng-disabled="!scroller.scrollStarted()" ng-click="scroller.top()">
+        <button class="btn btn-success" ng-disabled="scroller.scrollStarted() && !scroller.scrollPaused()" ng-click="scroller.play(play.prompt.time)"><i class="fa fa-play"></i> Start</button>
+        <button class="btn btn-warning" ng-disabled="!scroller.scrollStarted() || scroller.scrollPaused()" ng-click="scroller.pause()"><i class="fa fa-pause"></i> Pause</button>
+        <button class="btn btn-danger" ng-disabled="!scroller.scrollStarted()" ng-click="scroller.top()"><i class="fa fa-stop"></i> Top</button>
         
-        <input type="button" class="btn btn-info button-right" value="Edit" ng-click="play.editPrompt()">
+        <button type="button" class="btn btn-info button-right" ng-click="play.editPrompt()"><i class="fa fa-pencil"></i> Edit</button>
     </div>
-    <h2 id="name">{{ play.prompt.name }}</h2>
-    <p id="time"><em>{{ play.prompt.time | amDurationFormat}}</em></p>
+    <h2 id="name" class="inline">{{ play.prompt.name }}</h2>
+    <p id="time" class="inline">&nbsp&nbsp<i class="fa fa-clock-o"></i><em> {{ play.prompt.time | amDurationFormat}}</em></p>
     <div id="body-container" full-height><p id="body" ng-bind-html="play.prompt.body"></p></div>
 </form>

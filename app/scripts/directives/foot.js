@@ -9,7 +9,7 @@
 angular.module('promptApp')
   .directive('foot', function () {
     return {
-      template: '<div class="footer"><p><span class="glyphicon glyphicon-heart"></span> Will</p></div>',
+      template: '<div class="footer">Fork me on <a href="http://github.com/whenther/prompt"><span class="fa fa-github"></span> Github</a></div>',
       restrict: 'E'
     };
   });

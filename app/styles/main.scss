@@ -1,8 +1,8 @@
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
 // endbower
-$fa-font-path: "/bower_components/font-awesome/fonts";
-@import "font-awesome/scss/font-awesome";
+$fa-font-path: "fonts/font-awesome/fonts";
+@import "fonts/font-awesome/scss/font-awesome";
 
 html {height: 100%;}
 body {height: 100%;}

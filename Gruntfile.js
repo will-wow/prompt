@@ -345,7 +345,8 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'config.xml'
+            'config.xml',
+            'res/**/*.{jpg,png}'
           ]
         }, {
           expand: true,

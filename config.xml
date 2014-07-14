@@ -11,16 +11,16 @@
     href="http://whentheresawill.net">Will</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
+    <preference name="android-targetSdkVersion" value="17" />
     
-    <icon src="icons/icon-android-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
-    <icon src="icons/icon-android-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
-    <icon src="icons/icon-android-hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
-    <icon src="icons/icon-android-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
-    <icon src="icons/icon-android-xxhdpi.png" gap:platform="android" gap:qualifier="xxhdpi"/>
+    <icon src="res/icons/icon-android-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
+    <icon src="res/icons/icon-android-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
+    <icon src="res/icons/icon-android-hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
+    <icon src="res/icons/icon-android-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
+    <icon src="res/icons/icon-android-xxhdpi.png" gap:platform="android" gap:qualifier="xxhdpi"/>
     
-    <gap:splash src="ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
-    <gap:splash src="mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
-    <gap:splash src="hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
-    <gap:splash src="xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
-    <gap:splash src="xxhdpi.png" gap:platform="android" gap:qualifier="xxhdpi"/>
+    <gap:splash src="res/splash/ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
+    <gap:splash src="res/splash/mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
+    <gap:splash src="res/splash/hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
+    <gap:splash src="res/splash/xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
 </widget>

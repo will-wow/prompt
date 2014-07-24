@@ -12,7 +12,7 @@
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="android-targetSdkVersion" value="17" />
-    <gap:plugin name = "org.apache.cordova.splashscreen" />
+        gap:plugin name = "org.apache.cordova.splashscreen" />
     <plugin name="File" value="org.apache.cordova.FileUtils" />
     <plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
     

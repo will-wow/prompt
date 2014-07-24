@@ -14,7 +14,8 @@ angular
     'ngSanitize',
     'duScroll',
     'LocalStorageModule',
-    'angularMoment'
+    'angularMoment',
+    'angularFileUpload'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider){
     localStorageServiceProvider.setPrefix('ls');

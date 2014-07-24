@@ -1,19 +1,27 @@
 <div class="container" id="all">
+    <div class="wait" ng-show="all.uploadStatus == all.uStats.STARTED">
+        <i class="fa fa-circle-o-notch fa-spin waitspin"></i>
+    </div>
+    
     <div class="row"><div class="big-btn-container">
         <h4>
            You can play, edit, or delete your prompts from here.
         </h4>
         
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <a class="btn btn-block btn-primary" href="#/load"><i class="fa fa-plus"></i> New</a>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-4">
+                <label class="btn btn-block btn-info"><i class="fa fa-upload"></i> Upload
+                    <input type="file" ng-file-select="all.upload($files)" multiple style="display:none;"></input>
+                </label>
+            </div>
+            <div class="col-xs-4">
                 <button type="button" class="btn btn-block btn-danger" ng-click="all.clearAll()"><i class="fa fa-trash-o"></i> Clear All</button>
             </div>
         </div>
     </div></div>
-
     
     <ul class="list-unstyled row">
         <li class="col-md-4 col-sm-6 prompt-container" ng-repeat="prompt in main.prompts track by $index">

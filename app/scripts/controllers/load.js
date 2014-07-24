@@ -13,17 +13,17 @@ angular.module('promptApp')
     // Set up a Prompt class 
     var scope = this,
         Prompt = function() {
-        return {
-            name: null,
-            body: null,
-            time: null
+            return {
+                name: null,
+                body: null,
+                time: null
+            };
         };
-    };
 
     // Tie a new prompt to the controller
     scope.prompt = new Prompt();
     
-    // Add a new prompt
+    // Add a new prompt by hand
     scope.addPrompt = function() {
         // Add prompt to db
         Prompts.push(scope.prompt);

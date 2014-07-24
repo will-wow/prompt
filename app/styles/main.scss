@@ -2,8 +2,10 @@
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
 // endbower
 
-$fa-font-path: "/styles/fonts";
+$fa-font-path: "../styles/fonts";
 @import "font-awesome/scss/font-awesome.scss";
+
+.fa {text-rendering: auto;}
 
 html {height: 100%;}
 body {height: 100%;}

@@ -15,7 +15,8 @@ angular
     'duScroll',
     'LocalStorageModule',
     'angularMoment',
-    'angularFileUpload'
+    'angularFileUpload',
+    'angularMSTime'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider){
     localStorageServiceProvider.setPrefix('ls');

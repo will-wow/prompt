@@ -1,6 +1,6 @@
 {
   "name": "prompt",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "dependencies": {
     "ng-file-upload-shim": "~1.6.1",
     "angular": "1.2.16",
@@ -14,7 +14,8 @@
     "moment": "~2.7.0",
     "angular-moment": "~0.7.1",
     "font-awesome": "~4.1.0",
-    "ng-file-upload": "~1.6.1"
+    "ng-file-upload": "~1.6.1",
+    "angular-ms-time": "~1"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",

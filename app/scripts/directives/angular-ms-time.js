@@ -7,13 +7,13 @@
  * # angularMilliseconds
  */
 angular.module('promptApp')
-  .directive('angularMilliseconds', function () {
+  .directive('angularMsTime', function () {
     return {
       restrict: 'A',
       scope: {
-        msModel : "=angularMilliseconds",
-        preMs   : "@angularMillisecondsPre",
-        postMs  : "@angularMillisecondsPost",
+        msModel : "=angularMsTime",
+        preMs   : "@angularMsTimePre",
+        postMs  : "@angularMsTimePost",
       },
       link: function postLink(scope, element, attrs) {
         /**
@@ -130,10 +130,13 @@ angular.module('promptApp')
           * Bind the time value/text to the msModel
           */
         function bindTime () {
+          // Get the element type
+          var type = element[0].tagName.toLowerCase();
+          
           //====================================================================
           // Input: two-way bind
           //====================================================================
-          if (element.is('input')) {
+          if (type === 'input' || type === 'textarea') {
             // Update the value on model change
             scope.$watch('msModel', function (newValue) {
               element.val(msToTime(newValue));
@@ -146,7 +149,7 @@ angular.module('promptApp')
                 var newValue = element.val();
                 
                 // mark as dirty
-                 element.addClass('ng-dirty')
+                 element.addClass('ng-dirty');
                  
                 if (isValidTime(newValue)) {
                   // Update the model

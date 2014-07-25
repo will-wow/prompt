@@ -7,6 +7,6 @@
         <button type="button" class="btn btn-info button-right" ng-click="play.editPrompt()"><i class="fa fa-pencil"></i> Edit</button>
     </div>
     <h2 id="name" class="inline">{{ play.prompt.name }}</h2>
-    <p id="time" class="inline">&nbsp&nbsp<i class="fa fa-clock-o"></i><em> {{ play.prompt.time | amDurationFormat }}</em></p>
+    <p id="time" class="inline">&nbsp&nbsp<i class="fa fa-clock-o"></i> <em angular-milliseconds="play.prompt.time"> </em></p>
     <div id="body-container" full-height><pre id="body" ng-bind-html="play.prompt.body"></pre></div>
 </form>

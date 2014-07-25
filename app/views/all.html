@@ -27,7 +27,7 @@
         <li class="col-md-4 col-sm-6 prompt-container" ng-repeat="prompt in main.prompts track by $index">
             <div class="prompt">
                 <p id="name" class="inline"><strong>{{ prompt.name }}</strong></p>
-                <p id="time" class="inline right"><i class="fa fa-clock-o"></i><em> {{ prompt.time | amDurationFormat}}</em></p>
+                <p id="time" class="inline right"><i class="fa fa-clock-o"></i> <em angular-milliseconds="prompt.time"></em></p>
                 <div class="row">
                     <div class="col-xs-4">
                         <button type="button" class="btn btn-block btn-success" ng-click="all.play($index)"><i class="fa fa-play"></i> Play</button>

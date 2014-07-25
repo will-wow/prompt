@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc service
- * @name promptApp.Resetable
+ * @name promptApp.Resettable
  * @description
  * # Resettable
  * Return a Class that has data and functions to make resetting data easy

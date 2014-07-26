@@ -3,7 +3,7 @@
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0"
     id="net.whentheresawill.prompt" 
-    version="0.0.4">
+    version="0.1.0">
     
     <name>prompt</name>
     <description>A teleprompter for the 21st Century</description>
@@ -11,10 +11,11 @@
     href="http://whentheresawill.net">Will</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
+    <preference name="splashscreen" value="res/splash/splash-android-XHDPI.png" />
+    <preference name="splash-screen-duration" value="6000" />
     <preference name="android-targetSdkVersion" value="17" />
-        gap:plugin name = "org.apache.cordova.splashscreen" />
-    <plugin name="File" value="org.apache.cordova.FileUtils" />
-    <plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
+    <gap:plugin name="org.apache.cordova.splashscreen" version="0.2.7" />
+    <gap:plugin name="org.apache.cordova.file" version="1.0.1" />
     
     <icon src="res/icons/icon-android-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
     <icon src="res/icons/icon-android-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>

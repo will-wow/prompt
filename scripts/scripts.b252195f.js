@@ -15,7 +15,8 @@ angular
     'duScroll',
     'LocalStorageModule',
     'angularMoment',
-    'angularFileUpload'
+    'angularFileUpload',
+    'angularMSTime'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider){
     localStorageServiceProvider.setPrefix('ls');
@@ -307,7 +308,7 @@ angular.module('promptApp').directive('fullHeight', function() {
 
 /**
  * @ngdoc service
- * @name promptApp.Resetable
+ * @name promptApp.Resettable
  * @description
  * # Resettable
  * Return a Class that has data and functions to make resetting data easy

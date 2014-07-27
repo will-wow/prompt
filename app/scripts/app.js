@@ -53,6 +53,11 @@ angular
       .when('/about', {
         templateUrl: 'views/about.html'
       })
+      .when('/raw', {
+        templateUrl: 'views/raw.html',
+        controller: 'RawCtrl',
+        controllerAs: 'raw'
+      })
       .otherwise({
         redirectTo: '/'
       });

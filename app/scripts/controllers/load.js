@@ -9,16 +9,9 @@
  */
 angular.module('promptApp')
 // Add a prompt
-.controller('NewCtrl', ['$location', 'Prompts', function($location, Prompts) {
+.controller('NewCtrl', ['$location', 'Prompts', 'Prompt', function($location, Prompts, Prompt) {
     // Set up a Prompt class 
-    var scope = this,
-        Prompt = function() {
-            return {
-                name: null,
-                body: null,
-                time: null
-            };
-        };
+    var scope = this;
 
     // Tie a new prompt to the controller
     scope.prompt = new Prompt();

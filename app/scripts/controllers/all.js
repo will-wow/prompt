@@ -7,15 +7,8 @@
  * # AllCtrl
  * Controller of the promptApp
  */
-angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', 'Prompts', function($scope, $location, $upload, Prompts) {
+angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', 'Prompts', 'Prompt', function($scope, $location, $upload, Prompts, Prompt) {
     var scope = this,
-        Prompt = function() {
-            return {
-                name: null,
-                body: null,
-                time: null
-            };
-        },
         readerOnLoad =  (function (i, fileCount, file, reader, prompt) {
             return function (e) {
                 // Populate the prompt object
@@ -38,7 +31,7 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
     scope.uStats = {
         NONE:       0,
         STARTED:    1,
-        DONE:   2
+        DONE:       2
     };
     
     // current status

@@ -16,6 +16,7 @@
     <preference name="android-targetSdkVersion" value="17" />
     <gap:plugin name="org.apache.cordova.splashscreen" version="0.2.7" />
     <gap:plugin name="org.apache.cordova.file" version="1.0.1" />
+    <gap:plugin name="com.msopentech.indexeddb" />
     
     <icon src="res/icons/icon-android-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
     <icon src="res/icons/icon-android-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>

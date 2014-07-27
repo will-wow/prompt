@@ -8,8 +8,7 @@
  * Controller of the promptApp
  */
 angular.module('promptApp').controller('MainCtrl', ['$scope', 'localStorageService', 'Prompts', function($scope, localStorageService, Prompts) {
-    var promptsInStore = localStorageService.get('prompts'),
-        scope = this;
+    var scope = this;
 
     scope.prompts = Prompts;
 

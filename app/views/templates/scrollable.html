@@ -1,7 +1,7 @@
 <form role="form" id="play">
     <div class="button-row">
-        <button class="btn btn-success" ng-disabled="scroller.scrollStarted() && !scroller.scrollPaused()" ng-click="scroller.play(play.prompt.time)"><i class="fa fa-play"></i> Start</button>
-        <button class="btn btn-warning" ng-disabled="!scroller.scrollStarted() || scroller.scrollPaused()" ng-click="scroller.pause()"><i class="fa fa-pause"></i> Pause</button>
+        <button class="btn btn-success" ng-disabled="scroller.scrollStarted() && !scroller.paused" ng-click="scroller.play(play.prompt.time)"><i class="fa fa-play"></i> Start</button>
+        <button class="btn btn-warning" ng-disabled="!scroller.scrollStarted() || scroller.paused" ng-click="scroller.pause()"><i class="fa fa-pause"></i> Pause</button>
         <button class="btn btn-danger" ng-disabled="!scroller.scrollStarted()" ng-click="scroller.top()"><i class="fa fa-stop"></i> Top</button>
         
         <button type="button" class="btn btn-info button-right" ng-click="play.editPrompt()"><i class="fa fa-pencil"></i> Edit</button>

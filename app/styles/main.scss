@@ -89,6 +89,7 @@ button:focus, input:focus  {
     #time {display: inline-block};
     
     #body-container {
+        overflow: auto;
         overflow: overlay;
         border-top-left-radius: $border-radius-base;
         border-bottom-left-radius: $border-radius-base;

@@ -20,21 +20,43 @@ angular.module('promptApp').directive('scrollable', function() {
                 // Clear the timers
                 clearTime = function() {
                     timeStart = 0;
-                    timeElapsed = 0;
+                    scope.paused = false;
                 };
+            
+            function scroll(time) {
+                var top = 0,
+                    currentTop  = scrollContainer.scrollTop(),
+                    bottom      = (scrollBody.height() + 20) - scrollContainer.height(),
+                    percentLeft = (bottom - (currentTop - top)) / bottom,
+                    timeLeft    = Number(time) * percentLeft;
+                    
+                    if (bottom >= 0) {
+                        scope.paused = false;
+                        timeStart = Date.now();
+                        
+                        scrollContainer.scrollTop(bottom, timeLeft, function(t) {
+                            return t;
+                        })
+                        .then(function () {
+                            scope.paused = true;
+                        });
+                    } else {
+                        scope.paused = true;
+                    }
+            }
+            
+            scope.paused = false;
             
             // Start the scroll from the begining, or the current scroll spot
             scope.play = function(time) {
                 timeStart = Date.now() - timeElapsed;
-                scrollContainer.scrollTop(scrollBody.height() - scrollContainer.height(), Number(time) - timeElapsed, function(t) {
-                    return t;
-                });
-                // Reset time elapsed immediatly, to show pause is done
-                timeElapsed = 0;
+                scroll(time);
             };
             
             // Pause the scrolling
             scope.pause = function() {
+                scope.paused = true;
+                
                 scrollContainer.scrollTop(scrollContainer.scrollTop(), 1)
                 .then(function () {
                     if (timeStart)
@@ -54,10 +76,6 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.scrollStarted = function () {
                 // if started, not done
                 return !!timeStart;
-            };
-            // return true if scrolling is pasued
-            scope.scrollPaused = function () {
-                return !!timeElapsed;
             };
         },
         controllerAs: 'scroller'

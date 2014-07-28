@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'Cutive Mono';
+    src: url("../styles/fonts/CutiveMono-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Raleway';
+    src: url("../styles/fonts/Raleway-ExtraLight.ttf") format("truetype");
+    font-weight: 200;
+}
+@font-face {
+    font-family: 'Raleway';
+    src: url("../styles/fonts/Raleway-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Raleway';
+    src: url("../styles/fonts/Raleway-Bold.ttf") format("truetype");
+    font-weight: 500;
+}
+
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss";
+
+//==============================================================================
+// BOOTSTRAP VARIABLES =========================================================
+//==============================================================================
+// BUTTONS
+// Color = Bootstrap Background
+$btn-primary-color  : $brand-primary;
+$btn-success-color  : $brand-success;
+$btn-info-color     : $brand-info;
+$btn-warning-color  : $brand-warning;
+$btn-danger-color   : $brand-danger;
+// Border = Bootstrap Background
+$btn-primary-border : $brand-primary;
+$btn-success-border : $brand-success;
+$btn-info-border    : $brand-info;
+$btn-warning-border : $brand-warning;
+$btn-danger-border  : $brand-danger;
+// Background = Transparent
+$btn-default-bg     : rgba(0,0,0,0);
+$btn-primary-bg     : rgba(0,0,0,0);
+$btn-success-bg     : rgba(0,0,0,0);
+$btn-info-bg        : rgba(0,0,0,0);
+$btn-warning-bg     : rgba(0,0,0,0);
+$btn-danger-bg      : rgba(181,82,80,0);
+// Border radius
+$border-radius-base :       16px;
+$border-radius-large:       16px;
+$border-radius-small:       13px;
+
+
+//## Settings for some of the most global styles.
+
+//** Background color for `<body>`.
+$body-bg:               #141221;
+//** Global text color on `<body>`.
+$text-color:            #c8c8c8;
+
+// Other variables
+$border: 1px solid $text-color;
+$transparent: rgba(0,0,0,0);
+
+//== Typography
+$font-family-sans-serif : "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-base       : $font-family-sans-serif;
+$headings-font-family   : $font-family-sans-serif;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace  : "Cutive Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+$headings-font-weight   : 200;
+
+
+// Forms
+$input-bg               : $transparent;
+$input-color            : $text-color;
+$input-border           : $text-color;
+$input-border-radius    : 6px;
+
+.form-control {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-bottom: 15px;
+}
+    
+// nav
+$navbar-default-bg: $body-bg;
+$navbar-default-color: $text-color;
+$navbar-default-link-color: $text-color;
+
+// jumbo
+$jumbotron-bg: $transparent;
+.jumbotron {
+    border: $border;
+}
+
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
+// endbower
+
+$fa-font-path: "../styles/fonts";
+@import "font-awesome/scss/font-awesome.scss";

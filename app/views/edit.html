@@ -1,4 +1,4 @@
-<form role="form" name="form" novalidate>
+<form role="form" name="form" class="edit" novalidate>
     <div class="button-row">
         <button type="button" class="btn btn-danger" ng-click="edit.removePrompt()">
             <i class="fa fa-trash-o"></i> Delete
@@ -8,7 +8,7 @@
         </button>
     </div>
     <!-- Info -->
-    <input type="text" ng-model="edit.prompt.name" placeholder="Name" class="form-control" name="name" required>
-    <input type="text" ms-time="edit.prompt.time" placeholder="Length in milliseconds" class="form-control" name="time" min="1" required>
-    <textarea ng-model="edit.prompt.body" placeholder="Body." class="form-control" full-height name="body" required></textarea>
+    <input type="text" ng-model="edit.prompt.name" placeholder="Name" class="form-control name" name="name" required>
+    <input type="text" ms-time="edit.prompt.time" placeholder="Length in hr:min:sec" class="form-control time" name="time" min="1" required>
+    <textarea ng-model="edit.prompt.body" placeholder="Body." class="form-control body" full-height name="body" required></textarea>
 </form>

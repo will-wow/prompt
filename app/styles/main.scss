@@ -1,54 +1,48 @@
-// bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
-// endbower
+@import "./bootstrap-customize.scss";
 
-$fa-font-path: "../styles/fonts";
-@import "font-awesome/scss/font-awesome.scss";
-
-.fa {text-rendering: auto;}
-
+//==============================================================================
+// GENERAL =====================================================================
+//==============================================================================
+// Full-height
 html {height: 100%;}
-body {height: 100%;}
-#main {height: 100%;}
-.view {padding: 71px 0;}
+body {
+    height: 100%;
+}
 
-.inline{display: inline-block;}
-.right{float: right;}
+.view {padding: 71px 0;}
 
 .wrap {
     min-height: 100%;
     margin: 0 auto -60px;
 }
 
-.navbar-brand img {height: 20px;}
+// Font-Awesome fix
+.fa {text-rendering: auto;}
 
-.button-row {
-    padding-bottom: 10px;
+// Semantic styles
+.inline{display: inline-block;}
+.right{float: right;}
 
-    .button-right {
-        float: right;
-    }
-};
+// Footer
+.footer {height: 60px;}
 
+// Input
 input.ng-invalid.ng-dirty {
     background-color: #FA787E;
 }
 
-.footer {height: 60px;}
-
-form#play {
-    #body-container {
-        overflow: auto;
-    }
-    #time {display: inline-block};
-    #body {
-        margin:0;
-        padding:0;
-        font-family: monospace;
-    }
+button:focus, input:focus  {
+    outline: none !important;
 }
 
-div#all {
+//==============================================================================
+// ROUTES ======================================================================
+//==============================================================================
+// MAIN
+#main {height: 100%;}
+
+// ALL
+#all {
     .big-btn-container {
         padding: 10px;
         text-align: center;
@@ -59,8 +53,8 @@ div#all {
     }
     .prompt {
         padding: 10px;
-        border-radius: 5px;
-        background-color: #F0F0F0;
+        border-radius: $border-radius-base;
+        border: $border;
     }
     
     .wait {
@@ -80,3 +74,61 @@ div#all {
         }
     }
 }
+
+// Edit/Load
+.edit {
+    .body {
+        font-family: $font-family-monospace;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+// Play
+#play {
+    #time {display: inline-block};
+    
+    #body-container {
+        overflow: overlay;
+        border-top-left-radius: $border-radius-base;
+        border-bottom-left-radius: $border-radius-base;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border: $border;
+    }
+    
+    #body {
+        margin: 0;
+        padding: 10px 20px 10px 10px;
+        word-break: break-word;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        background: $transparent;
+        border: none;
+        border-radius: 0;
+        color: $text-color;
+    }
+}
+
+
+.view {padding: 71px 0;}
+
+.wrap {
+    min-height: 100%;
+    margin: 0 auto -60px;
+}
+
+.navbar-brand img {height: 20px;}
+
+.button-row {
+    padding-bottom: 10px;
+
+    .button-right {
+        float: right;
+    }
+};
+
+
+
+
+

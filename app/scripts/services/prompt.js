@@ -28,4 +28,6 @@ angular.module('promptApp')
     Prompt.prototype.removeTag = function (key) {
       delete this.tags[key];
     };
+    
+    return Prompt;
   });

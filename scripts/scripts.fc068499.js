@@ -53,6 +53,11 @@ angular
       .when('/about', {
         templateUrl: 'views/about.html'
       })
+      .when('/raw', {
+        templateUrl: 'views/raw.html',
+        controller: 'RawCtrl',
+        controllerAs: 'raw'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -68,8 +73,7 @@ angular
  * Controller of the promptApp
  */
 angular.module('promptApp').controller('MainCtrl', ['$scope', 'localStorageService', 'Prompts', function($scope, localStorageService, Prompts) {
-    var promptsInStore = localStorageService.get('prompts'),
-        scope = this;
+    var scope = this;
 
     scope.prompts = Prompts;
 
@@ -92,16 +96,9 @@ angular.module('promptApp').controller('MainCtrl', ['$scope', 'localStorageServi
  */
 angular.module('promptApp')
 // Add a prompt
-.controller('NewCtrl', ['$location', 'Prompts', function($location, Prompts) {
+.controller('NewCtrl', ['$location', 'Prompts', 'Prompt', function($location, Prompts, Prompt) {
     // Set up a Prompt class 
-    var scope = this,
-        Prompt = function() {
-            return {
-                name: null,
-                body: null,
-                time: null
-            };
-        };
+    var scope = this;
 
     // Tie a new prompt to the controller
     scope.prompt = new Prompt();
@@ -343,15 +340,8 @@ angular.module('promptApp').factory('Resettable', function Resettable() {
  * # AllCtrl
  * Controller of the promptApp
  */
-angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', 'Prompts', function($scope, $location, $upload, Prompts) {
+angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', 'Prompts', 'Prompt', function($scope, $location, $upload, Prompts, Prompt) {
     var scope = this,
-        Prompt = function() {
-            return {
-                name: null,
-                body: null,
-                time: null
-            };
-        },
         readerOnLoad =  (function (i, fileCount, file, reader, prompt) {
             return function (e) {
                 // Populate the prompt object
@@ -374,7 +364,7 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
     scope.uStats = {
         NONE:       0,
         STARTED:    1,
-        DONE:   2
+        DONE:       2
     };
     
     // current status
@@ -435,3 +425,67 @@ angular.module('promptApp')
       restrict: 'E',
     };
   });
+
+'use strict';
+
+/**
+ * @ngdoc service
+ * @name promptApp.prompt
+ * @description
+ * # prompt
+ * Factory in the promptApp.
+ */
+angular.module('promptApp')
+  .factory('Prompt', function () {
+    
+    // New-able Prompt model
+    var Prompt = function () {
+      this.name   = null;
+      this.body   = null;
+      this.notes  = null;
+      this.time   = null;
+      this.tags   = {};
+    };
+    
+    Prompt.prototype.addTag = function (key, value) {
+      if (key && value) {
+        this.tags[key] = value;
+      }
+    };
+    
+    Prompt.prototype.removeTag = function (key) {
+      delete this.tags[key];
+    };
+    
+    return Prompt;
+  });
+
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name promptApp.controller:RawCtrl
+ * @description
+ * # RawCtrl
+ * Controller of the promptApp
+ */
+angular.module('promptApp')
+  .controller('RawCtrl', ['$scope', 'Prompts', function ($scope, Prompts) {
+    var scope = this,
+        prompts = Prompts;
+    
+    // Get JSON of current prompts
+    scope.prompts = angular.toJson(prompts);
+    
+    // Overwrite
+    scope.overwritePrompts = function () {
+      // empty prompts
+      prompts.length = 0;
+      // replace contents
+      Array.prototype.push.apply(prompts, angular.fromJson(scope.prompts || []));
+      
+      //$scope.$apply();
+      // re-pull from prompts
+      scope.prompts = angular.toJson(prompts);
+    };
+  }]);

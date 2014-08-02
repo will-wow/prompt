@@ -16,7 +16,7 @@
     "font-awesome": "~4.1.0",
     "ng-file-upload": "~1.6.1",
     "angular-ms-time": "~1",
-    "IndexedDBShim": "*"
+    "IndexedDBShim": "*",
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",

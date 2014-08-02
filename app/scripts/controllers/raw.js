@@ -9,21 +9,16 @@
  */
 angular.module('promptApp')
   .controller('RawCtrl', ['$scope', 'Prompts', function ($scope, Prompts) {
-    var scope = this,
-        prompts = Prompts;
+    var scope = this;
     
     // Get JSON of current prompts
-    scope.prompts = angular.toJson(prompts);
+    scope.prompts = angular.toJson(Prompts.list);
     
     // Overwrite
     scope.overwritePrompts = function () {
-      // empty prompts
-      prompts.length = 0;
-      // replace contents
-      Array.prototype.push.apply(prompts, angular.fromJson(scope.prompts || []));
+      Prompts.replace(scope.prompts || []);
       
-      //$scope.$apply();
-      // re-pull from prompts
-      scope.prompts = angular.toJson(prompts);
+      // re-pull from prompts, add the JSON back to local scope
+      scope.prompts = angular.toJson(Prompts.list);
     };
   }]);

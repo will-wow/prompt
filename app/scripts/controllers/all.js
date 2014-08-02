@@ -17,7 +17,7 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                 prompt.time = 0;
                 
                 // Add it to the Prompts array
-                Prompts.push(prompt);
+                Prompts.add(prompt);
                 
                 // If this is the last file, note that in the scope
                 if (i === fileCount-1) {
@@ -67,12 +67,12 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
     scope.edit = function (promptIndex) {
         $location.path('/load/' + promptIndex);
     };
-        // Remove the requested prompt
+    // Remove the requested prompt
     scope.remove = function(promptIndex) {
-        Prompts.splice(promptIndex, 1);
+        Prompts.delete(promptIndex);
     };
     
     scope.clearAll = function () {
-        Prompts.length = 0;
+        Prompts.clear();
     };
 }]);

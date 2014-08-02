@@ -13,8 +13,6 @@ angular
     'ngRoute',
     'ngSanitize',
     'duScroll',
-    'LocalStorageModule',
-    'angularMoment',
     'angularFileUpload',
     'angularMSTime'
   ])

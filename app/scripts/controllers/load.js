@@ -19,7 +19,7 @@ angular.module('promptApp')
     // Add a new prompt by hand
     scope.addPrompt = function() {
         // Add prompt to db
-        Prompts.push(scope.prompt);
+        Prompts.add(scope.prompt);
 
         // Go to prompt's page (use the highest index from the prompts)
         $location.path('/load/' + (Prompts.length - 1));

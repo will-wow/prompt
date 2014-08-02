@@ -10,20 +10,14 @@
     "angular-sanitize": "1.2.16",
     "angular-route": "1.2.16",
     "angular-scroll": "0.5.8",
-    "angular-local-storage": "~0.0.5",
-    "moment": "~2.7.0",
-    "angular-moment": "~0.7.1",
     "font-awesome": "~4.1.0",
     "ng-file-upload": "~1.6.1",
     "angular-ms-time": "~1",
-    "IndexedDBShim": "*",
+    "IndexedDBShim": "*"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",
     "angular-scenario": "1.2.16"
   },
-  "appPath": "app",
-  "resolutions": {
-    "moment": ">=2.0.0 <2.7.0"
-  }
+  "appPath": "app"
 }

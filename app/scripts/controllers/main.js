@@ -7,15 +7,12 @@
  * # MainCtrl
  * Controller of the promptApp
  */
-angular.module('promptApp').controller('MainCtrl', ['$scope', 'localStorageService', 'Prompts', function($scope, localStorageService, Prompts) {
+angular.module('promptApp').controller('MainCtrl', ['Prompts', function(Prompts) {
     var scope = this;
-
-    scope.prompts = Prompts;
-
-    // Watch the prompts for change
-    $scope.$watch(function() {
-        return scope.prompts;
-    }, function() {
-        localStorageService.add('prompts', JSON.stringify(scope.prompts));
-    }, true);
+    
+    // make all prompts available
+    scope.prompts = Prompts.list;
+    // make the ready() function available
+    // app should disable prompt access until ready
+    scope.ready = Prompts.ready;
 }]);

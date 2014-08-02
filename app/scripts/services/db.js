@@ -60,7 +60,7 @@ angular.module('promptApp')
           // When done, push the prompts to the Prompts service
           
           // Update the Prompts
-          Prompts.replace(prompts);
+          Prompts.replaceList(prompts);
         }
       };
     }

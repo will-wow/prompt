@@ -8,10 +8,12 @@
  * Factory in the promptApp.
  */
 angular.module('promptApp')
-  .factory('db', ['$q', 'Prompts', function ($q, Prompts) {
+  .factory('db', ['$q', function ($q) {
     
+    // Hold ref to the Prompts list
+    var Prompts,
     // Hold ref to the db
-    var db,
+        db,
     // db ready flag
         ready = false,
         DB_NAME = 'prompt',
@@ -37,10 +39,11 @@ angular.module('promptApp')
      * @param {string} mode either "readonly" or "readwrite"
      */
     function promptsToScope () {
-      // an array of prompts to be populated from the DB
-      var prompts = [],
       // Get the prompts objectStore
-          store = getObjectStore(PROMPTS_STORE_NAME, 'readonly');
+      var store = getObjectStore(PROMPTS_STORE_NAME, 'readonly');
+      
+      // Clear the Prompts service's list
+      Prompts.length = 0;
       
       // open a cursor to run through the prompts
       store.openCursor().onsuccess = function(evt) {
@@ -51,17 +54,14 @@ angular.module('promptApp')
         if (cursor) {
            // If there are more entries, continue
           
-          // Add the prompt to the local array
+          // Add the prompt to the Prompts service list
           // Set it to the cursor key to keep things in sync
-          prompts[cursor.key] = cursor.value;
+          Prompts[cursor.key] = cursor.value;
           
           // Move on to the next object in store
           cursor.continue();
         } else {
-          // When done, push the prompts to the Prompts service
-          
-          // Update the Prompts
-          Prompts.replaceList(prompts);
+          // Done!
         }
       };
     }
@@ -79,12 +79,14 @@ angular.module('promptApp')
       //========================================================================
       // OPEN ==================================================================
       //========================================================================
-      open: function() {
+      open: function(promptsService) {
         var deferred = $q.defer(),
-            dbName = "prompt",
-            version = 1,
-            reqOpen = indexedDB.open(dbName, version);
-      
+            version = 2,
+            reqOpen = indexedDB.open(DB_NAME, version);
+        
+        // Get a reference to the promptsService
+        Prompts = promptsService;
+        
         // Create the prompts objectStore (only happens the first time)
         reqOpen.onupgradeneeded = function(e) {
           var db = e.target.result;
@@ -100,11 +102,13 @@ angular.module('promptApp')
           }
           
           // Create the prompts objectStore
-          db.createObjectStore(PROMPTS_STORE_NAME, {autoIncrement: true});
+          db.createObjectStore(PROMPTS_STORE_NAME, {keyPath: '_id', autoIncrement: true});
         };
         
         // Fires after db is ready
         reqOpen.onsuccess = function(e) {
+          db = e.target.result;
+          
           // set readiness
           ready = true;
           // Push any prompts from the db to the Prompts service
@@ -128,7 +132,7 @@ angular.module('promptApp')
       add: function (prompt) {
         // Get the store
         var deferred = $q.defer(),
-            store = getObjectStore(DB_NAME, 'readwrite'),
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
         // Add the prompt
             reqAdd = store.add(prompt);
             
@@ -152,7 +156,7 @@ angular.module('promptApp')
       delete: function (index) {
         // Get the store
         var deferred = $q.defer(),
-            store = getObjectStore(DB_NAME, 'readwrite'),
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
         // Delete the prompt
             reqDelete = store.delete(index);
 
@@ -175,7 +179,7 @@ angular.module('promptApp')
       update: function (index, prompt) {
         // Save a ref to the store for a later put
         var deferred = $q.defer(),
-            store = getObjectStore(DB_NAME, 'readwrite');
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite');
         
         // Find the prompt
         store.get(index)
@@ -212,7 +216,7 @@ angular.module('promptApp')
       //========================================================================
       clear: function () {
         var deferred = $q.defer(),
-            store = getObjectStore(DB_NAME, 'readwrite'),
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
             reqClear = store.clear();
             
         // Update to the new cleared scope on successful clear

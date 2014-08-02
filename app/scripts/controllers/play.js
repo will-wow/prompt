@@ -13,7 +13,7 @@ angular.module('promptApp')
         promptIndex = Number($routeParams.promptId);
     
     // Access the requested prompt
-    scope.prompt = Prompts[promptIndex];
+    scope.prompt = Prompts.list[promptIndex];
     
     scope.editPrompt = function () {
         $location.path('/load/' + promptIndex);

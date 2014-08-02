@@ -31,11 +31,17 @@ angular.module('promptApp')
     var scope = this,
         promptIndex = Number($routeParams.promptId);
     
+    scope.prompt = {};
+    
     function localCopyPrompt (newPrompt) {
+        var prompt = newPrompt || Prompts.list[promptIndex];
+        
         // Get a local copy of the requested prompt
         // Using JSON seems to be the fastest way to do this
         // http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object/5344074#5344074
-        scope.prompt = JSON.parse(JSON.stringify(newPrompt || Prompts[promptIndex]));
+        if (prompt) {
+            scope.prompt = JSON.parse(JSON.stringify(prompt));
+        }
     }
     
     // Pull a local copy on load
@@ -59,6 +65,6 @@ angular.module('promptApp')
     };
     // Move to the prompt's play page
     scope.playPrompt = function () {
-        $location.path('/play/' + promptIndex)
+        $location.path('/play/' + promptIndex);
     };
 }]);

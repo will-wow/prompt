@@ -19,26 +19,46 @@ angular.module('promptApp')
     // Add a new prompt by hand
     scope.addPrompt = function() {
         // Add prompt to db
-        Prompts.add(scope.prompt);
-
-        // Go to prompt's page (use the highest index from the prompts)
-        $location.path('/load/' + (Prompts.length - 1));
+        Prompts.add(scope.prompt)
+        .then(function (newIndex) {
+            // Go to prompt's page (use the returned index)
+            $location.path('/load/' + newIndex);
+        });
+        // TODO: notify on error
     };
 // Edit a Prompt
 }]).controller('EditCtrl', ['$routeParams', '$location', 'Prompts', function($routeParams, $location, Prompts) {
     var scope = this,
         promptIndex = Number($routeParams.promptId);
     
-    // Access the requested prompt
-    scope.prompt = Prompts[promptIndex];
+    function localCopyPrompt (newPrompt) {
+        // Get a local copy of the requested prompt
+        // Using JSON seems to be the fastest way to do this
+        // http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object/5344074#5344074
+        scope.prompt = JSON.parse(JSON.stringify(newPrompt || Prompts[promptIndex]));
+    }
     
+    // Pull a local copy on load
+    localCopyPrompt();
+    
+    // Push any changes to DB and persist
+    scope.updatePrompt = function () {
+        Prompts.update(promptIndex, scope.prompt)
+        .then(function (newPrompt) {
+            // Pull a new copy, just in case something weird happened
+            localCopyPrompt(newPrompt);
+        });
+    };
     // Remove the requested prompt
     scope.removePrompt = function () {
-        Prompts.splice(promptIndex, 1);
-        $location.path('/load');
+        Prompts.remove(promptIndex)
+        // Move to the all page
+        .then(function () {
+            $location.path('/all');
+        });
     };
     // Move to the prompt's play page
     scope.playPrompt = function () {
-        $location.path('/play/' + promptIndex);
+        $location.path('/play/' + promptIndex)
     };
 }]);

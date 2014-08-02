@@ -16,9 +16,10 @@ angular.module('promptApp')
     
     // Overwrite
     scope.overwritePrompts = function () {
-      Prompts.replace(scope.prompts || []);
-      
-      // re-pull from prompts, add the JSON back to local scope
-      scope.prompts = angular.toJson(Prompts.list);
+      Prompts.replace(scope.prompts || [])
+      .then(function () {
+        // re-pull from prompts, add the JSON back to local scope
+        scope.prompts = angular.toJson(Prompts.list);
+      });
     };
   }]);

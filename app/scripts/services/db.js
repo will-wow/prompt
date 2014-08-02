@@ -8,7 +8,7 @@
  * Factory in the promptApp.
  */
 angular.module('promptApp')
-  .factory('db', ['Prompts', function (Prompts) {
+  .factory('db', ['$q', 'Prompts', function ($q, Prompts) {
     
     // Hold ref to the db
     var db,
@@ -17,8 +17,9 @@ angular.module('promptApp')
         DB_NAME = 'prompt',
         PROMPTS_STORE_NAME = 'prompts';
     
-    function onError() {
-      alert('There was an error with the db');
+    function onError(deferred, message) {
+      console.log(message || 'There was an error with the db');
+      deferred.reject();
     }
     
     /**
@@ -79,7 +80,8 @@ angular.module('promptApp')
       // OPEN ==================================================================
       //========================================================================
       open: function() {
-        var dbName = "prompt",
+        var deferred = $q.defer(),
+            dbName = "prompt",
             version = 1,
             reqOpen = indexedDB.open(dbName, version);
       
@@ -108,50 +110,72 @@ angular.module('promptApp')
           // Push any prompts from the db to the Prompts service
           // which will go to any scope that needs them
           promptsToScope();
+          
+          // Resolve promise
+          deferred.resolve();
         };
       
         // Errors usually caused by old browsers or high security
-        reqOpen.onerror = onError;
+        reqOpen.onerror = function () {
+          onError(deferred, 'DB not opened!');
+        };
+        
+        return deferred.promise;
       },
       //========================================================================
       // OPEN ==================================================================
       //========================================================================
       add: function (prompt) {
         // Get the store
-        var store = getObjectStore(DB_NAME, 'readwrite'),
+        var deferred = $q.defer(),
+            store = getObjectStore(DB_NAME, 'readwrite'),
         // Add the prompt
             reqAdd = store.add(prompt);
+            
         // Update the scope
         reqAdd.onsuccess = function(e) {
           promptsToScope();
+          
+          // Resolve promise
+          // Include the next index
+          deferred.resolve(e.target.result);
         };
         reqAdd.onerror = function (e) {
-          console.log("Couldn't add " + prompt.name);
+          onError(deferred, "Couldn't add " + prompt.name);
         };
+        
+        return deferred.promise;
       },
       //========================================================================
       // DELETE ================================================================
       //========================================================================
       delete: function (index) {
         // Get the store
-        var store = getObjectStore(DB_NAME, 'readwrite'),
+        var deferred = $q.defer(),
+            store = getObjectStore(DB_NAME, 'readwrite'),
         // Delete the prompt
             reqDelete = store.delete(index);
 
         // Update the scope on delete
         reqDelete.onsuccess = function(e) {
           promptsToScope();
+          
+          // Resolve promise
+          deferred.resolve();
         };
         reqDelete.onerror = function (e) {
-          console.log("Couldn't delete " + index);
+          onError(deferred, "Couldn't delete " + index);
         };
+        
+        return deferred.promise;
       },
       //========================================================================
       // UPDATE ================================================================
       //========================================================================
       update: function (index, prompt) {
         // Save a ref to the store for a later put
-        var store = getObjectStore(DB_NAME, 'readwrite');
+        var deferred = $q.defer(),
+            store = getObjectStore(DB_NAME, 'readwrite');
         
         // Find the prompt
         store.get(index)
@@ -170,24 +194,40 @@ angular.module('promptApp')
           var reqUpdate = store.put(prompt);
           // Error
           reqUpdate.onerror = function(e) {
-            console.log("Couldn't update " + index);
+            onError(deferred, "Couldn't update " + index);
           };
           // Update the scope on update
           reqUpdate.onsuccess = function(e) {
             promptsToScope();
+            
+            // Resolve promise
+            deferred.resolve(e.target.result.value);
           };
         };
+        
+        return deferred.promise;
       },
       //========================================================================
       // CLEAR =================================================================
       //========================================================================
       clear: function () {
-        var store = getObjectStore(DB_NAME, 'readwrite');
-        var reqClear = store.clear();
+        var deferred = $q.defer(),
+            store = getObjectStore(DB_NAME, 'readwrite'),
+            reqClear = store.clear();
+            
         // Update to the new cleared scope on successful clear
-        reqClear.onsuccess = promptsToScope;
+        reqClear.onsuccess = function () {
+          promptsToScope();
+          
+          // Resolve promise
+          deferred.resolve();
+        };
         // error
-        reqClear.onerror = onError;
+        reqClear.onerror = function (e) {
+          onError(deferred, "Couldn't clear");
+        };
+        
+        return deferred.promise;
       }
     };
   }]);

@@ -9,7 +9,7 @@
  */
 angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', 'Prompts', 'Prompt', function($scope, $location, $upload, Prompts, Prompt) {
     var scope = this,
-        readerOnLoad =  (function (i, fileCount, file, reader, prompt) {
+        readerOnLoad = (function (i, fileCount, file, reader, prompt) {
             return function (e) {
                 // Populate the prompt object
                 prompt.name = file.name.replace(/\..+$/, '');

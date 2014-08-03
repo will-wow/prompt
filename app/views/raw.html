@@ -1,23 +1,21 @@
 <h3>Raw Data</h3>
 
 <p>
-    This is the raw data for everything you've uploaded into prompt. 
+    This area is for moving your data to a different device, or backing it up.
+    You can export a file that holds all your data, email it to your phone,
+    and import it there to get all your stuff, ready to scroll!</br>
+    
     Eventually prompt will implement
     Google Drive integration to let you move your data between devices.
-    In the meantime, copy everything here and paste it into this box on a
-    different device, or vice versa. You'll immediatly have access to all your
-    stuff!
+    In the meantime, this is a good way of keeping everything in sync.
 </p>
 
 <p>
-    <strong>Careful!</strong> Once you click Overwirite, there's no going
-    back!
+    <strong>Careful!</strong> Once you import new data,
+    your old data is wiped away!
 </p>
 
 <form role="form" ng-submit="raw.overwritePrompts()" >
-    <button type="submit" class="btn btn-danger" ng-enabled="raw.prompts">
-        <i class="fa fa-save"></i> Overwrite
-    </button>
-    
-    <textarea ng-model="raw.prompts" placeholder="Paste here!" class="form-control" name="data" full-height></textarea>
+    <export-btn></export-btn>
+    <import-btn></import-btn>
 </form>

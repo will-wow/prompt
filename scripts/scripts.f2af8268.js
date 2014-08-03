@@ -563,30 +563,8 @@ angular.module('promptApp')
  * Controller of the promptApp
  */
 angular.module('promptApp')
-  .controller('RawCtrl', ['$scope', '$q', 'Prompts', function ($scope, $q, Prompts) {
+  .controller('RawCtrl', [function () {
     var scope = this;
-    
-    // Get JSON of current prompts
-    scope.prompts = angular.toJson(Prompts.list);
-    
-    // Overwrite
-    scope.overwritePrompts = function () {
-      var deferred = $q.defer();
-      
-      $scope.$emit('areYouSure', {
-          action  : 'overwrite all data',
-          body    : 'This cannot be undone!',
-          deferred: deferred
-      });
-      
-      deferred.promise.then(function () {
-        Prompts.replace(angular.fromJson(scope.prompts) || [])
-        .then(function () {
-          // re-pull from prompts, add the JSON back to local scope
-          scope.prompts = angular.toJson(Prompts.list);
-        });
-      });
-    };
   }]);
 
 'use strict';
@@ -994,6 +972,102 @@ angular.module('promptApp')
         
       },
       controllerAs: 'modal',
+      replace: true
+    };
+  });
+
+'use strict';
+
+/**
+ * @ngdoc directive
+ * @name promptApp.directive:exportBtn
+ * @description
+ * # exportBtn
+ */
+angular.module('promptApp')
+  .directive('exportBtn', function () {
+    return {
+      template: '<a class="btn btn-info" download="prompt.json" ng-enabled="export.isReady"><i class="fa fa-download"></i> Export</a>',
+      restrict: 'E',
+      controller: function ($element, $q, Prompts) {
+        var scope = this;
+        
+        scope.isReady = false;
+        
+        // Ready a file for download
+        function readyFile() {
+          // Get the JSON for the prompts
+          var jsonPrompts = angular.toJson(Prompts.list);
+          
+          // Make it into a data uri for the element
+          $element.attr("href",'data:Application/octet-stream,'+encodeURIComponent(jsonPrompts));
+          
+          // Set the ready flag
+          scope.isReady = true;
+        }
+        
+        // Get the file ready for download on load
+        readyFile();
+      },
+      controllerAs: 'export',
+      replace: true
+    };
+  });
+
+'use strict';
+
+/**
+ * @ngdoc directive
+ * @name promptApp.directive:importBtn
+ * @description
+ * # importBtn
+ */
+angular.module('promptApp')
+  .directive('importBtn', function () {
+    return {
+      template: '<label class="btn btn-danger"><i class="fa fa-upload"></i> Import\
+                    <input type="file" ng-file-select="import.upload($files)" style="display:none;"></input>\
+                </label>',
+      restrict: 'E',
+      controller: function ($element, $q, $scope, $location, Prompts) {
+        var scope = this;
+        
+        // Ready a file for download
+        scope.upload = function (files) {
+          if (files) {
+            // Are you sure
+            var deferred = $q.defer();
+    
+            $scope.$emit('areYouSure', {
+              action  : 'overwrite all data',
+              body    : 'This cannot be undone!',
+              deferred: deferred
+            });
+            
+            // If yes 
+            deferred.promise.then(function () {
+              // set up reader
+              var reader = new FileReader();
+          
+              // set up reader callback 
+              // this will run after the file is parsed
+              reader.onload = function (e) {
+                // Replace the prompts with the file's info
+                Prompts.replace(angular.fromJson(reader.result) || [])
+                // Move to the prompts page
+                .then(function () {
+                  $location.path('/');
+                });
+              };
+              
+              // read in the file
+              reader.readAsText(files[0]);
+            });
+          }
+        };
+        
+      },
+      controllerAs: 'import',
       replace: true
     };
   });

@@ -82,15 +82,21 @@ $input-border-radius    : 6px;
 }
     
 // nav
-$navbar-default-bg: $body-bg;
-$navbar-default-color: $text-color;
-$navbar-default-link-color: $text-color;
+$navbar-default-bg                  : $body-bg;
+$navbar-default-color               : $text-color;
+$navbar-default-link-color          : $text-color;
+.nav > li > a:hover,:focus {
+    color: darken($text-color, 15%) !important;
+}
 
 // jumbo
 $jumbotron-bg: $transparent;
 .jumbotron {
     border: $border;
 }
+
+// Modal
+$modal-content-bg: lighten($body-bg, 15%);
 
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap.scss";

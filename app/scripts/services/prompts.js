@@ -34,7 +34,7 @@ angular.module('promptApp')
         };
     
     // Open the DB (which will populate prompts)
-    db.open(prompts);
+    db.open(prompts).then(function () {});
     
     return api;
 }]);

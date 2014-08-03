@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+  "name": "prompt",
+  "version": "0.3.0",
+
+  "default_locale": "en",
+  "description": "Your mobile teleprompter",
+  "icons": {"114": icon.png},
+
+  "author": "whentheresawill.net",
+  "offline_enabled": true,
+  "permissions": ["realtalk.whentheresawill.net"]
+}

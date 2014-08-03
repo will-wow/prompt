@@ -17,13 +17,14 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                 prompt.time = 0;
                 
                 // Add it to the Prompts array
-                Prompts.add(prompt);
-                
-                // If this is the last file, note that in the scope
-                if (i === fileCount-1) {
-                    scope.uploadStatus = scope.uStats.DONE;
-                    $scope.$apply();
-                }
+                Prompts.add(prompt)
+                .then(function (e) {
+                    // If this is the last file, note that in the scope
+                    if (i === fileCount-1) {
+                        scope.uploadStatus = scope.uStats.DONE;
+                        //$scope.$apply();
+                    } 
+                });
             };
         });
     
@@ -68,11 +69,15 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
         $location.path('/load/' + promptIndex);
     };
     // Remove the requested prompt
-    scope.remove = function(promptIndex) {
-        Prompts.delete(promptIndex);
+    scope.remove = function(promptID) {
+        Prompts.delete(promptID)
+        // A blank function seems to get the scope to update
+        .then(function (e) {});
     };
     
     scope.clearAll = function () {
-        Prompts.clear();
+        Prompts.clear()
+        // A blank function seems to get the scope to update
+        .then(function (e) {});
     };
 }]);

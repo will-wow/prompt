@@ -8,7 +8,7 @@
  * Factory in the promptApp.
  */
 angular.module('promptApp')
-  .factory('db', ['$q', function ($q) {
+  .factory('db', ['$q', '$rootScope', function ($q, $rootScope) {
     
     // Hold ref to the Prompts list
     var Prompts,
@@ -38,7 +38,7 @@ angular.module('promptApp')
      * @param {string} store_name
      * @param {string} mode either "readonly" or "readwrite"
      */
-    function promptsToScope () {
+    function promptsToScope (deferred, data) {
       // Get the prompts objectStore
       var store = getObjectStore(PROMPTS_STORE_NAME, 'readonly');
       
@@ -56,12 +56,12 @@ angular.module('promptApp')
           
           // Add the prompt to the Prompts service list
           // Set it to the cursor key to keep things in sync
-          Prompts[cursor.key] = cursor.value;
+          Prompts.push(cursor.value);
           
           // Move on to the next object in store
           cursor.continue();
         } else {
-          // Done!
+          deferred.resolve(data);
         }
       };
     }
@@ -113,10 +113,7 @@ angular.module('promptApp')
           ready = true;
           // Push any prompts from the db to the Prompts service
           // which will go to any scope that needs them
-          promptsToScope();
-          
-          // Resolve promise
-          deferred.resolve();
+          promptsToScope(deferred);
         };
       
         // Errors usually caused by old browsers or high security
@@ -132,19 +129,16 @@ angular.module('promptApp')
       add: function (prompt) {
         // Get the store
         var deferred = $q.defer(),
-            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite');
+        
         // Add the prompt
-            reqAdd = store.add(prompt);
-            
+        store.add(prompt);
         // Update the scope
-        reqAdd.onsuccess = function(e) {
-          promptsToScope();
-          
-          // Resolve promise
-          // Include the next index
-          deferred.resolve(e.target.result);
+        store.transaction.oncomplete = function(e) {
+          // Include new index to be send with the resolve
+          promptsToScope(deferred);
         };
-        reqAdd.onerror = function (e) {
+        store.transaction.onerror = function (e) {
           onError(deferred, "Couldn't add " + prompt.name);
         };
         
@@ -156,18 +150,16 @@ angular.module('promptApp')
       delete: function (index) {
         // Get the store
         var deferred = $q.defer(),
-            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite');
+        
         // Delete the prompt
-            reqDelete = store.delete(index);
+        store.delete(index);
 
         // Update the scope on delete
-        reqDelete.onsuccess = function(e) {
-          promptsToScope();
-          
-          // Resolve promise
-          deferred.resolve();
+        store.transaction.oncomplete = function(e) {
+          promptsToScope(deferred);
         };
-        reqDelete.onerror = function (e) {
+        store.transaction.onerror = function (e) {
           onError(deferred, "Couldn't delete " + index);
         };
         
@@ -176,10 +168,11 @@ angular.module('promptApp')
       //========================================================================
       // UPDATE ================================================================
       //========================================================================
-      update: function (index, prompt) {
+      update: function (prompt) {
         // Save a ref to the store for a later put
         var deferred = $q.defer(),
-            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite');
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
+            index = prompt._id;
         
         // Find the prompt
         store.get(index)
@@ -195,17 +188,14 @@ angular.module('promptApp')
           }
           
           // Update the entry
-          var reqUpdate = store.put(prompt);
+          store.put(prompt);
           // Error
-          reqUpdate.onerror = function(e) {
+          store.transaction.onerror = function(e) {
             onError(deferred, "Couldn't update " + index);
           };
           // Update the scope on update
-          reqUpdate.onsuccess = function(e) {
-            promptsToScope();
-            
-            // Resolve promise
-            deferred.resolve(e.target.result.value);
+          store.transaction.oncomplete = function(e) {
+            promptsToScope(deferred);
           };
         };
         
@@ -216,24 +206,22 @@ angular.module('promptApp')
       //========================================================================
       clear: function () {
         var deferred = $q.defer(),
-            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite'),
-            reqClear = store.clear();
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite');
+        
+        store.clear();
             
         // Update to the new cleared scope on successful clear
-        reqClear.onsuccess = function () {
-          promptsToScope();
-          
-          // Resolve promise
-          deferred.resolve();
+        store.transaction.oncomplete = function () {
+          promptsToScope(deferred);
         };
         // error
-        reqClear.onerror = function (e) {
+        store.transaction.onerror = function (e) {
           onError(deferred, "Couldn't clear");
         };
         
         return deferred.promise;
       }
-    };
+    }; 
   }]);
     
     

@@ -20,9 +20,9 @@ angular.module('promptApp')
     scope.addPrompt = function() {
         // Add prompt to db
         Prompts.add(scope.prompt)
-        .then(function (newIndex) {
+        .then(function () {
             // Go to prompt's page (use the returned index)
-            $location.path('/load/' + newIndex);
+            $location.path('/load/' + (Prompts.list.length - 1));
         });
         // TODO: notify on error
     };
@@ -33,15 +33,11 @@ angular.module('promptApp')
     
     scope.prompt = {};
     
-    function localCopyPrompt (newPrompt) {
-        var prompt = newPrompt || Prompts.list[promptIndex];
-        
+    function localCopyPrompt () {
         // Get a local copy of the requested prompt
         // Using JSON seems to be the fastest way to do this
         // http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object/5344074#5344074
-        if (prompt) {
-            scope.prompt = JSON.parse(JSON.stringify(prompt));
-        }
+        scope.prompt = JSON.parse(JSON.stringify(Prompts.list[promptIndex]));
     }
     
     // Pull a local copy on load
@@ -49,15 +45,15 @@ angular.module('promptApp')
     
     // Push any changes to DB and persist
     scope.updatePrompt = function () {
-        Prompts.update(promptIndex, scope.prompt)
-        .then(function (newPrompt) {
+        Prompts.update(scope.prompt)
+        .then(function () {
             // Pull a new copy, just in case something weird happened
-            localCopyPrompt(newPrompt);
+            localCopyPrompt();
         });
     };
     // Remove the requested prompt
     scope.removePrompt = function () {
-        Prompts.remove(promptIndex)
+        Prompts.delete(scope.prompt._id)
         // Move to the all page
         .then(function () {
             $location.path('/all');

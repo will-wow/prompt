@@ -40,8 +40,11 @@ angular.module('promptApp')
           scope.title = data.title;
           scope.body = data.body;
           
-          for (var i; i<data.buttons.length; i++) {
-            // Save ref to button
+          // Add buttons
+          for (var i=0; i<data.buttons.length; i++) {
+            // Create closure for each button
+            (function () {
+              // Save ref to button
             var dataBtn   = data.buttons[i];
             // Build new button to add to scope
             var scopeBtn  = {};
@@ -49,12 +52,17 @@ angular.module('promptApp')
             // Add text
             scopeBtn.text = dataBtn.text;
             
+            // Add class name(s)
+            scopeBtn.class = function () {
+              return dataBtn.class;
+            };
+            
             // Add click handler
             if (dataBtn.click) {
               
               // If click handler included
-              scopeBtn.click = function () {
-                dataBtn.click();
+              scopeBtn.click = function (e) {
+                dataBtn.click(e);
                 // Add close if requested
                 if (dataBtn.close) {
                   closeModal();
@@ -68,6 +76,7 @@ angular.module('promptApp')
             
             // Add the new button to the scope
             scope.buttons.push(scopeBtn);
+            })();
           }
           
           // Open modal
@@ -84,19 +93,21 @@ angular.module('promptApp')
             buttons : [
               // Continue with action button
               {
-                text  : 'Yes',
+                text  : '<i class="fa fa-check"></i> Yes',
                 click : function (e) {
                   data.deferred.resolve();
                 },
-                close : true
+                close : true,
+                class : "btn-success"
               },
               // Cancel action button
               {
-                text: 'No',
+                text: '<i class="fa fa-times"></i> No',
                 click: function (e) {
                   data.deferred.reject();
                 },
-                close : true
+                close : true,
+                class : "btn-danger"
               }
             ]
           };
@@ -133,6 +144,8 @@ angular.module('promptApp')
         // Buttons
         scope.buttons = [];
         
-      }
+      },
+      controllerAs: 'modal',
+      replace: true
     };
   });

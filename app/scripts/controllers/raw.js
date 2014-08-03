@@ -8,7 +8,7 @@
  * Controller of the promptApp
  */
 angular.module('promptApp')
-  .controller('RawCtrl', ['$scope', 'Prompts', function ($scope, Prompts) {
+  .controller('RawCtrl', ['$scope', '$q', 'Prompts', function ($scope, $q, Prompts) {
     var scope = this;
     
     // Get JSON of current prompts
@@ -16,10 +16,20 @@ angular.module('promptApp')
     
     // Overwrite
     scope.overwritePrompts = function () {
-      Prompts.replace(scope.prompts || [])
-      .then(function () {
-        // re-pull from prompts, add the JSON back to local scope
-        scope.prompts = angular.toJson(Prompts.list);
+      var deferred = $q.defer();
+      
+      $scope.$emit('areYouSure', {
+          action  : 'overwrite all data',
+          body    : 'This cannot be undone!',
+          deferred: deferred
+      });
+      
+      deferred.promise.then(function () {
+        Prompts.replace(angular.fromJson(scope.prompts) || [])
+        .then(function () {
+          // re-pull from prompts, add the JSON back to local scope
+          scope.prompts = angular.toJson(Prompts.list);
+        });
       });
     };
   }]);

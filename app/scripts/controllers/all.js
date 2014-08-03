@@ -7,7 +7,7 @@
  * # AllCtrl
  * Controller of the promptApp
  */
-angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', 'Prompts', 'Prompt', function($scope, $location, $upload, Prompts, Prompt) {
+angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', '$q', 'Prompts', 'Prompt', function($scope, $location, $upload, $q, Prompts, Prompt) {
     var scope = this,
         readerOnLoad = (function (i, fileCount, file, reader, prompt) {
             return function (e) {
@@ -69,15 +69,35 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
         $location.path('/load/' + promptIndex);
     };
     // Remove the requested prompt
-    scope.remove = function(promptID) {
-        Prompts.delete(promptID)
-        // A blank function seems to get the scope to update
-        .then(function (e) {});
+    scope.remove = function(promptIndex, promptID) {
+        var deferred = $q.defer();
+        
+        $scope.$emit('areYouSure', {
+            action  : 'delete ' + Prompts.list[promptIndex],
+            body    : 'This cannot be undone!',
+            deferred: deferred
+        });
+        
+        deferred.promise.then(function () {
+            Prompts.delete(promptID)
+            // A blank function seems to get the scope to update
+            .then(function () {});
+        });
     };
     
     scope.clearAll = function () {
-        Prompts.clear()
-        // A blank function seems to get the scope to update
-        .then(function (e) {});
+        var deferred = $q.defer();
+        
+        $scope.$emit('areYouSure', {
+            action  : 'clear all data',
+            body    : 'This cannot be undone!',
+            deferred: deferred
+        });
+        
+        deferred.promise.then(function () {
+            Prompts.clear()
+            // A blank function seems to get the scope to update
+            .then(function () {});
+        });
     };
 }]);

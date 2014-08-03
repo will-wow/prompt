@@ -10,8 +10,8 @@
       </div>
       <div class="modal-footer">
         <!-- Buttons -->
-        <button type="button" ng-repeat="button in modal.buttons" class="btn" ng-class="button.class" ng-click="button.click">{{ button.text }}</button>
+        <button type="button" ng-repeat="button in modal.buttons" class="btn" ng-class="button.class()" ng-click="button.click()" ng-bind-html="button.text"></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div>

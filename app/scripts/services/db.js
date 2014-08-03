@@ -220,6 +220,33 @@ angular.module('promptApp')
         };
         
         return deferred.promise;
+      },
+      //========================================================================
+      // REPLACE ===============================================================
+      //========================================================================
+      replace: function (prompts) {
+        var deferred = $q.defer(),
+            store = getObjectStore(PROMPTS_STORE_NAME, 'readwrite');
+        
+        // Clear the store
+        store.clear()
+        // When clear is done (as part of same transaction)
+        // Load in the new data
+        .onsuccess = function () {
+          for (var i=0; i<prompts.length; i++) {
+            // Add the new prompt
+            store.add(prompts[i]);
+          }
+          
+        };
+        
+        // When full transaction is complete
+        // Push the new data to scope
+        store.transaction.oncomplete = function () {
+          promptsToScope(deferred);
+        };
+        
+        return deferred.promise;
       }
     }; 
   }]);

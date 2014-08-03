@@ -27,7 +27,7 @@ angular.module('promptApp')
         // TODO: notify on error
     };
 // Edit a Prompt
-}]).controller('EditCtrl', ['$routeParams', '$location', 'Prompts', function($routeParams, $location, Prompts) {
+}]).controller('EditCtrl', ['$routeParams', '$location', '$scope', '$q', 'Prompts', function($routeParams, $location, $scope, $q, Prompts) {
     var scope = this,
         promptIndex = Number($routeParams.promptId);
     
@@ -53,10 +53,20 @@ angular.module('promptApp')
     };
     // Remove the requested prompt
     scope.removePrompt = function () {
-        Prompts.delete(scope.prompt._id)
-        // Move to the all page
-        .then(function () {
-            $location.path('/all');
+        var deferred = $q.defer();
+        
+        $scope.$emit('areYouSure', {
+          action  : 'delete ' + scope.prompt.name,
+          body    : 'This cannot be undone!',
+          deferred: deferred
+        });
+        
+        deferred.promise.then(function () {
+            Prompts.delete(scope.prompt._id)
+            // Move to the all page
+            .then(function () {
+                $location.path('/all');
+            });
         });
     };
     // Move to the prompt's play page

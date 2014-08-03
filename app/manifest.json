@@ -2,12 +2,18 @@
   "manifest_version": 2,
   "name": "prompt",
   "version": "0.3.0",
-
+  
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  
   "default_locale": "en",
   "description": "Your mobile teleprompter",
   "icons": {"114": icon.png},
+  "minimum_chrome_version": "27",
 
-  "author": "whentheresawill.net",
-  "offline_enabled": true,
-  "permissions": ["realtalk.whentheresawill.net"]
+  "author": "whentheresawill",
+  "offline_enabled": true
 }

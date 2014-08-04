@@ -26,7 +26,13 @@ angular.module('promptApp')
           
           // Set the ready flag
           scope.isReady = true;
+          
+          console.log('ready');
         }
+        
+        $element.on('click', function () {
+          console.log('Clicked Export!');
+        });
         
         // Get the file ready for download on load
         readyFile();

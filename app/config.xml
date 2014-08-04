@@ -2,7 +2,7 @@
 <widget 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0"
-    xmlns:android   = "http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     id="net.whentheresawill.prompt" 
     version="0.3.0">
     
@@ -17,8 +17,7 @@
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="android-targetSdkVersion" value="17" />
-    
-    <application android:debuggable="true" />
+    <gap:plugin name="net.tunts.webintent" version="0.2.1" />
     
     <icon src="icon.png" />
 </widget>

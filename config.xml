@@ -13,9 +13,7 @@
     <preference name="permissions" value="none" />
     <preference name="android-targetSdkVersion" value="17" />
     
-    <gap:config-file platform="android" parent="/manifest">
-        <application android:debuggable="true" />
-    </gap:config-file>
+    <application android:debuggable="true" />
     
     <icon src="icon.png" />
 </widget>

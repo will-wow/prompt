@@ -23,10 +23,14 @@ angular.module('promptApp')
     
     // check if phonegap is installed
     if (isPhoneGap()) {
+      console.log('PhoneGap ready!');
+      
       // Add listener for deviceready
       // And resolve the promise when it is ready
-      document.addEventListener("deviceready", yourCallbackFunction, false);
+      document.addEventListener("deviceready", onPhoneGapReady, false);
     } else {
+      console.log('Non-PhoneGap browser ready!');
+      
       // Reject the promise if this isn't a phonegap instance
       deferred.reject();
     }

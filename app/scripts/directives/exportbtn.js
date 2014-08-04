@@ -20,7 +20,7 @@ angular.module('promptApp')
         // HELPERS =============================================================
         //======================================================================
         // Sets up click on phonegap
-        function phonegapSetup() {
+        function phonegapClickSetup() {
           var WebIntent = window.plugins.webintent,
               extras = {};
             
@@ -50,11 +50,17 @@ angular.module('promptApp')
         }
         
         // Sets up click on browser
-        function browserClick() {
+        function browserClickSetup() {
           // Add the data to the button for download
-          $element.attr("href",dataUri);
+          $element.attr("href", dataUri);
           // Set the ready flag
           scope.isReady = true;
+          
+          // Add click log
+          $element.on('click', function (e) {
+            console.log('Clicked Export!');
+          });
+          
         }
         
         // Ready the file for download
@@ -65,12 +71,11 @@ angular.module('promptApp')
           // generate the dataUri
           dataUri = 'data:Application/octet-stream,'+encodeURIComponent(jsonPrompts);
           
-          console.log('generated');
+          console.log('Export generated!');
+          
+          // Set up click handler based on phonegap status
+          pg.then(phonegapClickSetup, browserClickSetup);
         }
-        
-        $element.on('click', function () {
-          console.log('Clicked Export!');
-        });
         
         //======================================================================
         // ON LOAD =============================================================
@@ -80,9 +85,6 @@ angular.module('promptApp')
         
         // Get the file ready for download on load
         readyFile();
-        
-        // Set up click handler based on phonegap status
-        pg.then(phonegapSetup, browserClick);
       },
       controllerAs: 'export',
       replace: true

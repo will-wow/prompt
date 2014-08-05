@@ -13,7 +13,7 @@ angular.module('promptApp')
     
     // Return true if phonegap is running
     function isPhoneGap() {
-     return !!window.PhoneGap;
+     return (document.location.protocol == 'file:');
     }
     
     // resolve the deferred promise if phonegap exists, when ready

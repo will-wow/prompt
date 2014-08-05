@@ -17,7 +17,9 @@
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="android-targetSdkVersion" value="17" />
+    
     <gap:plugin name="net.tunts.webintent" version="0.2.1" />
+    <gap:plugin name="org.apache.cordova.file" version="1.0.1" />
     
     <icon src="icon.png" />
 </widget>

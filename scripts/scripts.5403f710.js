@@ -1001,28 +1001,24 @@ angular.module('promptApp')
         
         // Sets up click on phonegap
         function phonegapClickSetup() {
+          // Set up data
+          var subject         = 'prompt data export',
+              body            = 'My prompt data export is attached for importing.',
+              
+              // build data attachment
+              jsonPrompts     = angular.toJson(Prompts.list),
+              base64Data      = window.btoa(encodeURIComponent(escape(jsonPrompts))),
+              attachmentsData = [{'prompt.json': base64Data}];
           
-          // Email the export data
-          function sendEmailIntent() {
-            // Set up data
-            var subject         = 'prompt data export',
-                body            = 'My prompt data export is attached for importing.',
-                
-                // build data attachment
-                jsonPrompts     = angular.toJson(Prompts.list),
-                base64Data      = window.btoa(encodeURIComponent(escape(jsonPrompts))),
-                attachmentsData = [{'prompt.json': base64Data}];
-            
-            console.log('Export email generated!');
-            
-            // Phonegap doesn't do downloads. Use a intent to send the 
-            // data to email on button click
-            $element.on('click', function (e) {
-              // Send the data to email
-              window.plugins.emailComposer.showEmailComposerWithCallback(null,subject,body,null,null,null,null,null,attachmentsData);
-              console.log('Clicked Export!');
-            });
-          }
+          console.log('Export email generated!');
+          
+          // Phonegap doesn't do downloads. Use a intent to send the 
+          // data to email on button click
+          $element.on('click', function (e) {
+            // Send the data to email
+            window.plugins.emailComposer.showEmailComposerWithCallback(null,subject,body,null,null,null,null,null,attachmentsData);
+            console.log('Clicked Export!');
+          });
           
           // Set the ready flag
           scope.isReady = true;
@@ -1099,7 +1095,64 @@ angular.module('promptApp')
               // this will run after the file is parsed
               reader.onload = function (e) {
                 // Replace the prompts with the file's info
-                Prompts.replace(angular.fromJson(reader.result) || [])
+                Prompts.replace(angular.fromJson('use strict';
+
+/**
+ * @ngdoc directive
+ * @name promptApp.directive:importBtn
+ * @description
+ * # importBtn
+ */
+angular.module('promptApp')
+  .directive('importBtn', function () {
+    return {
+      template: '<label class="btn btn-danger"><i class="fa fa-upload"></i> Import\
+                    <input type="file" ng-file-select="import.upload($files)" style="display:none;"></input>\
+                </label>',
+      restrict: 'E',
+      controller: function ($element, $q, $scope, $location, Prompts) {
+        var scope = this;
+        
+        // Ready a file for download
+        scope.upload = function (files) {
+          if (files) {
+            // Are you sure
+            var deferred = $q.defer();
+    
+            $scope.$emit('areYouSure', {
+              action  : 'overwrite all data',
+              body    : 'This cannot be undone!',
+              deferred: deferred
+            });
+            
+            // If yes 
+            deferred.promise.then(function () {
+              // set up reader
+              var reader = new FileReader();
+          
+              // set up reader callback 
+              // this will run after the file is parsed
+              reader.onload = function (e) {
+                // Replace the prompts with the file's info
+                Prompts.replace(angular.fromJson(decodeURIComponent(reader.result)) || [])
+                // Move to the prompts page
+                .then(function () {
+                  $location.path('/');
+                });
+              };
+              
+              // read in the file
+              reader.readAsText(files[0]);
+            });
+          }
+        };
+        
+      },
+      controllerAs: 'import',
+      replace: true
+    };
+  });
+reader.result) || [])
                 // Move to the prompts page
                 .then(function () {
                   $location.path('/');

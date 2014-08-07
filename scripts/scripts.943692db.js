@@ -1001,61 +1001,31 @@ angular.module('promptApp')
         
         // Sets up click on phonegap
         function phonegapClickSetup() {
-          var file;
-        
-          window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
-  
-          function gotFS(fileSystem) {
-              fileSystem.root.getFile("prompt.json", {create: true, exclusive: false}, gotFileEntry, fail);
-          }
-  
-          function gotFileEntry(fileEntry) {
-              // save ref to fileEntry
-              file = fileEntry;
-              // Set up the writer
-              fileEntry.createWriter(gotFileWriter, fail);
-          }
           
-          function gotFileWriter(writer) {
-              writer.onwriteend = sendEmailIntent;
-              // Write the prompts list to the file
-              writer.write(angular.toJson(Prompts.list));
-              
-              console.log('Export file ready!');
-          }
-          
+          // Email the export data
           function sendEmailIntent() {
-            var WebIntent = window.plugins.webintent,
-                extras = {};
-              
-            extras[WebIntent.EXTRA_SUBJECT] = 'prompt data export';
-            extras[WebIntent.EXTRA_TEXT]    = "My prompt data export is attached for importing.";
-            extras[WebIntent.EXTRA_STREAM]  = file;
+            // Set up data
+            var subject         = 'prompt data export',
+                body            = 'My prompt data export is attached for importing.',
+                
+                // build data attachment
+                jsonPrompts     = angular.toJson(Prompts.list),
+                base64Data      = window.btoa(encodeURIComponent(escape(jsonPrompts))),
+                attachmentsData = [{'prompt.json': base64Data}];
+            
+            console.log('Export email generated!');
             
             // Phonegap doesn't do downloads. Use a intent to send the 
             // data to email on button click
             $element.on('click', function (e) {
-              WebIntent.startActivity(
-                {
-                  action: WebIntent.ACTION_SEND,
-                  extras: extras,
-                }, 
-                function() {
-                  console.log('Success!');
-                }, 
-                function() {
-                  alert('Failed to open URL via Android Intent');
-                }
-              );
-              
-              // Set the ready flag
-              scope.isReady = true;
+              // Send the data to email
+              window.plugins.emailComposer.showEmailComposerWithCallback(null,subject,body,null,null,null,null,null,attachmentsData);
+              console.log('Clicked Export!');
             });
           }
           
-          function fail(error) {
-              console.log(error.code);
-          }
+          // Set the ready flag
+          scope.isReady = true;
         }
         
         // Sets up click on browser

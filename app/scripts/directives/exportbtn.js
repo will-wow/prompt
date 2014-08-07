@@ -52,7 +52,7 @@ angular.module('promptApp')
           var jsonPrompts = angular.toJson(Prompts.list);
           
           // Add the data to the button for download
-          $element.attr("href", 'data:Application/octet-stream,'+encodeURIComponent(jsonPrompts));
+          $element.attr("href", 'data:Application/octet-stream,'+encodeURIComponent(escape(jsonPrompts)));
           // Set the ready flag
           scope.isReady = true;
           

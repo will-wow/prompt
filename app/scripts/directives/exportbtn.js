@@ -23,28 +23,24 @@ angular.module('promptApp')
         
         // Sets up click on phonegap
         function phonegapClickSetup() {
+          // Set up data
+          var subject         = 'prompt data export',
+              body            = 'My prompt data export is attached for importing.',
+              
+              // build data attachment
+              jsonPrompts     = angular.toJson(Prompts.list),
+              base64Data      = window.btoa(encodeURIComponent(escape(jsonPrompts))),
+              attachmentsData = [{'prompt.json': base64Data}];
           
-          // Email the export data
-          function sendEmailIntent() {
-            // Set up data
-            var subject         = 'prompt data export',
-                body            = 'My prompt data export is attached for importing.',
-                
-                // build data attachment
-                jsonPrompts     = angular.toJson(Prompts.list),
-                base64Data      = window.btoa(encodeURIComponent(escape(jsonPrompts))),
-                attachmentsData = [{'prompt.json': base64Data}];
-            
-            console.log('Export email generated!');
-            
-            // Phonegap doesn't do downloads. Use a intent to send the 
-            // data to email on button click
-            $element.on('click', function (e) {
-              // Send the data to email
-              window.plugins.emailComposer.showEmailComposerWithCallback(null,subject,body,null,null,null,null,null,attachmentsData);
-              console.log('Clicked Export!');
-            });
-          }
+          console.log('Export email generated!');
+          
+          // Phonegap doesn't do downloads. Use a intent to send the 
+          // data to email on button click
+          $element.on('click', function (e) {
+            // Send the data to email
+            window.plugins.emailComposer.showEmailComposerWithCallback(null,subject,body,null,null,null,null,null,attachmentsData);
+            console.log('Clicked Export!');
+          });
           
           // Set the ready flag
           scope.isReady = true;

@@ -12,10 +12,12 @@ Technology
 ----------
 prompt is an entirely client-side webapp, built with Angular. It uses
 Bootstrap and sass for styling, and among other libraries, the excellent
-[angular-scroll](https://github.com/durated/angular-scroll) for the controlling
+[angular-scroll](https://github.com/durated/angular-scroll) for controlling
 scrolling, and and my own library
 [angular-ms-time](https://github.com/whenther/angular-ms-time)
-for converting human-readable time to milliseconds.
+for converting human-readable time to milliseconds. I used 
+[PhoneGap Build](https://build.phonegap.com)
+to create the Android app.
 
 
 For or more information, or to try the app, see:  

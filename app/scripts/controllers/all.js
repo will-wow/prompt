@@ -16,7 +16,10 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                 prompt.body = reader.result;
                 prompt.time = 0;
                 
-                // Add it to the Prompts array
+                // Add info from any included JSON
+                addInfoFromJSON(prompt);
+                
+                // Add the new prompt to the Prompts array
                 Prompts.add(prompt)
                 .then(function (e) {
                     // If this is the last file, note that in the scope
@@ -27,6 +30,119 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                 });
             };
         });
+    
+    // Check if a string is JSON
+    function tryToParseJSON(text) {
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Convert a time string to ms
+     */
+    function timeToMs (time) {
+      var splitTime, splitTimeLength;
+      
+      //====================================================================
+      // Format the time
+      //====================================================================
+      // Make sure time is a string
+      time = time.toString().trim();
+      
+      splitTime = time.split(':');
+      splitTimeLength = splitTime.length;
+      
+      if (splitTimeLength === 1) {
+        // sec
+        time =  '00:00:' + time;
+      } else if (splitTimeLength === 2) {
+        // min:sec
+        time =  '00:' + time;
+      } else if (splitTimeLength === 3) {
+        // hrs:min:sec
+        // DO NOTHING (time is properly formatted)
+      } else if (splitTimeLength >= 4) {
+        // More than hrs:min:sec
+        time =  splitTime[splitTimeLength-3] + ':' + 
+                splitTime[splitTimeLength-2] + ':' + 
+                splitTime[splitTimeLength-1] + ':';
+      } else {
+        // Anything weird
+        time =  '00:00';
+      }
+      
+      //====================================================================
+      // Return time in ms
+      //====================================================================
+      return Date.parse("01 Jan 1970 " + time + " UTC");
+    }
+    
+    // Look for and pull out JSON from body text
+    function findJSON(body) {
+        // Split into array of lines
+        var lines = body.split('\n'),
+            i, info, jsonFound = false,
+            linesChecked = '',
+            otherLines = '';
+        
+        // Loop through each line
+        for (i = lines.length-1; i >= 0; i--) {
+            // Add the next line to the linesChecked
+            // Note that it starts at the bottom, and works its way up
+            // So it add the new line first
+            
+            if (jsonFound) {
+                otherLines = lines[i] + otherLines;
+            } else {
+                // Build new string to try
+                linesChecked = lines[i] + linesChecked;
+            
+                // Try to convert it to JSON
+                info = tryToParseJSON(linesChecked);
+                
+                // If it worked, that's the json tag
+                // Otherwise continue looping
+                if (info) {
+                    // Return the JSON string
+                    // And break loop
+                    return {
+                        // Flag that JSON found
+                        hasJSON : true,
+                        // Return the JSON object
+                        json    : info,
+                        body    : otherLines,
+                        // Return the line split at, 
+                        // So another function can remove the JSON text
+                        splitAt : i
+                    };
+                }
+                
+            }
+        }
+        // If it gets here, not found
+        return {
+            hasJSON: false
+        };
+    }
+    
+    // Find JSON info, and add it to the prompt
+    function addInfoFromJSON(prompt) {
+        var jsonChecked = findJSON(prompt.body);
+        
+        if (jsonChecked.hasJSON) {
+            var info = jsonChecked.json;
+            
+            // Merge info into prompt
+            prompt.name = info.name             || prompt.name;
+            prompt.time = timeToMs(info.time)   || prompt.time;
+            prompt.notes= info.notes            || prompt.notes;
+            prompt.body = jsonChecked.body      || prompt.body;
+            
+        }
+    }
     
     // Status Types
     scope.uStats = {

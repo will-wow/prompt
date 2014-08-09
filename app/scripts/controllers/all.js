@@ -13,7 +13,7 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
             return function (e) {
                 // Populate the prompt object
                 prompt.name = file.name.replace(/\..+$/, '');
-                prompt.body = reader.result;
+                prompt.body = reader.result.trim();
                 prompt.time = 0;
                 
                 // Add info from any included JSON
@@ -86,7 +86,8 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
         var lines = body.split('\n'),
             i, info, jsonFound = false,
             linesChecked = '',
-            otherLines = '';
+            otherLines = '',
+            returnObj;
         
         // Loop through each line
         for (i = lines.length-1; i >= 0; i--) {
@@ -106,26 +107,34 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                 // If it worked, that's the json tag
                 // Otherwise continue looping
                 if (info) {
-                    // Return the JSON string
-                    // And break loop
-                    return {
+                    // Build the return object
+                    returnObj = {
                         // Flag that JSON found
                         hasJSON : true,
                         // Return the JSON object
                         json    : info,
-                        body    : otherLines,
                         // Return the line split at, 
                         // So another function can remove the JSON text
                         splitAt : i
                     };
+                    // Set the jsonFound flag
+                    jsonFound = true;
                 }
                 
             }
         }
-        // If it gets here, not found
-        return {
-            hasJSON: false
-        };
+        // If JSON was found
+        if (jsonFound) {
+            // Add in the rest of the body to the return object
+            // Trim off any trailing whitespace
+            returnObj.body = otherLines.trim();
+        } else {
+            // Just set the hasJSON flag as false
+            returnObj = {hasJSON: false};
+        }
+        
+        // Return
+        return returnObj;
     }
     
     // Find JSON info, and add it to the prompt

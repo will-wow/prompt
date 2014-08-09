@@ -29,8 +29,8 @@ angular.module('promptApp')
               
               // build data attachment
               jsonPrompts     = angular.toJson(Prompts.list),
-              base64Data      = window.btoa(encodeURIComponent(escape(jsonPrompts))),
-              attachmentsData = [{'prompt.json': base64Data}];
+              base64Data      = window.btoa(encodeURIComponent(jsonPrompts)),
+              attachmentsData = [['prompt.json', base64Data]];
           
           console.log('Export email generated!');
           
@@ -52,7 +52,7 @@ angular.module('promptApp')
           var jsonPrompts = angular.toJson(Prompts.list);
           
           // Add the data to the button for download
-          $element.attr("href", 'data:Application/octet-stream,'+encodeURIComponent(escape(jsonPrompts)));
+          $element.attr("href", 'data:Application/octet-stream,'+encodeURIComponent(jsonPrompts));
           // Set the ready flag
           scope.isReady = true;
           

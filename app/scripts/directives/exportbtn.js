@@ -13,7 +13,6 @@ angular.module('promptApp')
       restrict: 'E',
       controller: function ($element, $q, Prompts, phonegapStatus) {
         var scope = this,
-            dataUri,
             pg = phonegapStatus;
         
         //======================================================================
@@ -29,7 +28,7 @@ angular.module('promptApp')
               
               // build data attachment
               jsonPrompts     = angular.toJson(Prompts.list),
-              base64Data      = window.btoa(encodeURIComponent(jsonPrompts)),
+              base64Data      = window.btoa(unescape(encodeURIComponent(jsonPrompts))),
               attachmentsData = [['prompt.json', base64Data]];
           
           console.log('Export email generated!');
@@ -52,7 +51,7 @@ angular.module('promptApp')
           var jsonPrompts = angular.toJson(Prompts.list);
           
           // Add the data to the button for download
-          $element.attr("href", 'data:text/plain;charset=utf-8,'+encodeURIComponent(jsonPrompts));
+          $element.attr("href", 'data:text/plain;charset=US-ASCII,' + unescape(encodeURIComponent(jsonPrompts)));
           // Set the ready flag
           scope.isReady = true;
           

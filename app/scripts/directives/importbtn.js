@@ -37,7 +37,7 @@ angular.module('promptApp')
               // this will run after the file is parsed
               reader.onload = function (e) {
                 // Replace the prompts with the file's info
-                Prompts.replace(angular.fromJson(reader.result) || [])
+                Prompts.replace(angular.fromJson(decodeURIComponent(escape(reader.result))) || [])
                 // Move to the prompts page
                 .then(function () {
                   $location.path('/');

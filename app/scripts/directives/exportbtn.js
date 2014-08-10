@@ -29,7 +29,12 @@ angular.module('promptApp')
               // build data attachment
               jsonPrompts     = angular.toJson(Prompts.list),
               base64Data      = window.btoa(unescape(encodeURIComponent(jsonPrompts))),
-              attachmentsData = [['prompt.json', base64Data]];
+              // Get the current date to append to the filename (for ordering and non-cacheing)
+              d               = new Date(),
+              // Make the date filename-safe
+              dateString      = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+'-'+d.getHours()+'-'+d.getMinutes(),
+              // Set up the attachment array
+              attachmentsData = [['prompt' + dateString + '.json', base64Data]];
           
           console.log('Export email generated!');
           

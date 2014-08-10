@@ -6,10 +6,6 @@
     id="net.whentheresawill.prompt" 
     version="0.3.1">
     
-    <gap:config-file platform="android" parent="/manifest">
-     <application android:debuggable="true" />
-    </gap:config-file>
-    
     <name>prompt</name>
     <description>Your mobile teleprompter</description>
     <author email="will@whentheresawill.net"

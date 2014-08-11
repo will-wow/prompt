@@ -9,6 +9,10 @@ body {
     height: 100%;
 }
 
+img {
+    max-width: 100%;
+}
+
 .view {padding: 71px 0;}
 
 .wrap {
@@ -31,6 +35,13 @@ input.ng-invalid.ng-dirty {
     background-color: #FA787E;
 }
 
+// Pre
+pre {
+    background: $transparent;
+    color: $text-color;
+    font-size: 1.1em;
+}
+
 button:focus, input:focus  {
     outline: none !important;
 }
@@ -48,6 +59,32 @@ button:focus, input:focus  {
 //==============================================================================
 // MAIN
 #main {height: 100%;}
+
+@media only screen and (min-width : $screen-md-min) {
+    // ABOUT (larger sizes)
+    #about {
+        .row {
+            position: relative;
+        }
+        
+        .img-container-right {
+            right: 0;
+        }
+        
+        .img-container {
+            top: 0;
+            bottom: 0;
+            position: absolute;
+            text-align: center;
+            
+            .svg-icon {
+                width: 100%;
+                height: auto;
+                max-height: 100%;
+            }
+        }
+    }
+}
 
 // ALL
 #all {

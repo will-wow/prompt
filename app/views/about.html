@@ -1,54 +1,155 @@
+<div id="about">
 <div class="jumbotron">
     <div class="container">
         <h1>Your mobile tele<span class="highlight">prompt</span>er</h1>
-        <p>This is an app built for one purpose: scrolling
-            text files at a steady rate. It's handy for musicians or speakers who have
-            text that needs to zip by in a certain amount of time, but don't 
-            want to have to keep swiping at their device.
-        </p>
+        <p>This is an app built for one purpose: scrolling text files at a steady
+            rate. It's handy for musicians or speakers who have text that needs to
+            zip by in a certain amount of time, but don't want to have to keep swiping
+            at their device.</p>
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
-            <h2>Add text</h2>
-            <p>First, click NEW on the nav bar to add a text file. There's a little required
-                information.
-                <br/>
-                <strong>name </strong>A memorable name, so you can find this later!
-                <br/>
-                <strong>time </strong>The time (in hrs:sec:min) to scroll your text
-                <br/>
-                <strong>body </strong>The actual text. This can include basic HTML formatting tags
-                like p, hr, em, or strong.
-            </p>
+            <h2 style="color: #5cb85d">Scroll your stuff.</h2>
+            <p>If you're a musician or a speaker, it's time to ditch the paper. Upload
+                or paste in all your speeches, presentations, guitar tabs - anything that's
+                saved as a text file. Add in the length of each file, and your laptop,
+                smartphone, or tablet will be able to scroll over each file, at the speed
+                you need.</p>
         </div>
         <div class="col-sm-4">
-            <h2>Play text</h2>
-            <p>
-                Choose text from the Prompts page.
-                <br/>
-                <strong>Play </strong>Start or continue scrolling the text from 
-                the current position.
-                <br/>
-                <strong>Pause </strong>Pause scrolling. You can continue where 
-                you left off by pressing play again.
-                <br/>
-                <strong>Top </strong>Scroll the text back to the top,
-                ready to be played again.
-            </p>
+            <h2 style="color: #efad4d">The stars, aligned.</h2>
+            <p>Prompt is for more than just text. It's compatible with most HTML tags,
+                including formatting tags (like strong and em) and tables, so you can style
+                your text. And since prompt preserves line breaks and displays in a monospaced
+                font, you can embed ASCII tabs, or align chords with words in a song.</p>
         </div>
         <div class="col-sm-4">
-            <h2>Edit/Delete text</h2>
-            <p>
-                Choose the text name from the Prompts downdown menu in the nav bar
-                and press Edit.
-                <br/>
-                <strong>Delete </strong>Permenantly delete this text.
-                <br/>
-                <strong>Edit the text </strong>Feel free to edit any text. 
-            </p>
+            <h2 style="color: #b55250">Play local.</h2>
+            <p>Sure, having your own personal teleprompter is handy. But when you're
+                in the basement of a dive bar in the middle of nowhere, or in the middle
+                of a packed conference, you really don't want to have to rely on a spotty
+                internet connection. With prompt, everything is saved locally 
+                so you're good to go.
+                </p>
         </div>
-        
     </div>
-    <div class="container">
+    <hr/>
+    <div class="row"><div class="col-sm-12">
+            <h2>How to get scrolling</h2>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-8">
+            <h3>Add text</h3>
+            <p>First, click NEW on the nav bar to add a text file. There's some required
+                information:
+                <br/>
+                <em>name: </em>A memorable name, so you can find this later!
+                <br/>
+                <em>time: </em>The time (in hrs:sec:min) to scroll your text
+                <br/>
+                <em>body: </em>The actual text. This can include basic HTML formatting tags
+                like p, hr, em, or strong.</p>
+            <h3>Play text</h3>
+            <p>Choose a file from the Prompts page and press Play.
+                <br/>
+                <em>Play: </em>Start or continue scrolling the text from the current position.
+                <br/>
+                <em>Pause: </em>Pause scrolling. You can continue where you left off by pressing
+                play again.
+                <br/>
+                <em>Top: </em>Scroll the text back to the top, ready to be played again.</p>
+            <h3>Edit/Delete text</h3>
+            <p>Choose a file from the Prompts page and press Edit.
+                <br/>
+                <em>Delete: </em>Permanently delete this text.
+                <br/>
+                <em>Save: </em>After you make any edits to the time or text, make sure to save
+                your work!</p>
+        </div>
+        <div class="col-sm-4 img-container img-container-right">
+            <img src="images/basic.svg" alt="basic art" class="svg-icon">
+        </div>
+    </div>
+    <hr/>
+    <div class="row"><div class="col-sm-12">
+            <h2>Advanced features</h2>
+            <p>If you just want to load up a speech and play it later, you probably don't
+                need any of this. If you're looking to do anything more involved, like
+                saving an entire song list or moving things between devices, read on!</p>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-8 col-sm-push-4">
+            <h3>Upload</h3>
+            <p>The easiest way to add a file is to do it manually, pasting in the name,
+                time, and body text. But if you want to add a bunch, that's pretty inefficient.
+                Instead, you can upload one or more files, and each one will be saved separately,
+                using the filenames as names.
+                <br/>
+                <br/>To do that, go to the Prompts page, press Upload, and choose any text
+                file on your filesystem. Note that they don't have to be .txt files - anything
+                saved as plain text, like .html or .md is fine. Anything saved in a proprietary
+                format, like .doc or .pdf, WILL NOT WORK.
+                <br/>
+                <br/>Also, note that choosing multiple files to upload is currently not working
+                on mobile devices. If you need to upload a few files, just do them one
+                at a time. If you need to upload a lot, do it on a computer, and import
+                the data (see below).</p>
+        </div>
+        <div class="col-sm-4 col-sm-pull-8 img-container">
+            <img src="images/upload.svg" alt="upload art" class="svg-icon">
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-8">
+            <h3>Upload Data</h3>
+            <p>Uploading files is great, but you have to manually add times and change
+                names to each one. To save that kind of data in your text files, you can
+                use a special data formatting style called JSON.</br>
+                </br>JSON is a format that is pretty easy for both humans and computers to read.
+                If you'd like to learn more about it, see 
+                <a href="http://json.org/" target="_other">json.org.</a></br>
+                </br>Using it with prompt isn't that complicated though. At the VERY BOTTOM
+                of your files, just add this text:
+                <pre>
+{
+    "name": "YOUR NAME",
+    "time": "1:00"
+}</pre>
+                Make sure to include the
+                brackets and commas, and to put double quotes around all values.
+                <br/>
+                <br/>If prompt finds this at the bottom of an uploaded file, it will use the
+                data, and the JSON won't show up in the body.</p>
+        </div>
+        <div class="col-sm-4 img-container img-container-right">
+            <img src="images/data.svg" alt="data art" class="svg-icon">
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-8 col-sm-push-4">
+            <h3>Import Export</h3>
+            <p>If you want to move your files between devices you have a couple options.
+                If you keep everything as separate text files, you can just re-upload them
+                on each device. To make things every easier, you can create an export file
+                of everything, and then import that onto your other device.
+                <br/>
+                <br/>To do that, go to the Import/Export page, and click Export on the device
+                you want to export from. This will create a prompt_export.json file. Save
+                that file in Dropbox or Google Drive, or email it to yourself, and Import
+                in on your second device. When import is complete, the second device will
+                have all your stuff!</p>
+        </div>
+        <div class="col-sm-4 col-sm-pull-8 img-container">
+            <img src="images/port.svg" alt="import-export art" class="svg-icon">
+        </div>
+    </div>
+</div>
+<div class="container"></div>

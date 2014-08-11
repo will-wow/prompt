@@ -1121,7 +1121,21 @@ angular.module('promptApp')
         //======================================================================
         // HELPERS =============================================================
         //======================================================================
+        // Build a filename with the current date
+        function currentFileName() {
+          // Get the current date to append to the filename (for ordering and non-cacheing)
+          var d               = new Date(),
+          // Make the date filename-safe
+              dateString      = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+'-'+d.getHours()+'-'+d.getMinutes();
+          
+          return ('prompt_export_' + dateString + '.json');
+        }
         
+        // Generate the export data
+        function generateExportData() {
+          var jsonPrompts     = angular.toJson(Prompts.list);
+          return unescape(encodeURIComponent(jsonPrompts));
+        }
         
         // Sets up click on phonegap
         function phonegapClickSetup() {
@@ -1129,10 +1143,11 @@ angular.module('promptApp')
           var subject         = 'prompt data export',
               body            = 'My prompt data export is attached for importing.',
               
+              fileName        = currentFileName(),
               // build data attachment
-              jsonPrompts     = angular.toJson(Prompts.list),
-              base64Data      = window.btoa(unescape(encodeURIComponent(jsonPrompts))),
-              attachmentsData = [['prompt.json', base64Data]];
+              base64Data      = window.btoa(generateExportData()),
+              // Set up the attachment array
+              attachmentsData = [[fileName, base64Data]];
           
           console.log('Export email generated!');
           
@@ -1155,6 +1170,8 @@ angular.module('promptApp')
           
           // Add the data to the button for download
           $element.attr("href", 'data:text/plain;charset=US-ASCII,' + unescape(encodeURIComponent(jsonPrompts)));
+          // Set the new filename
+          $element.attr("download", currentFileName());
           // Set the ready flag
           scope.isReady = true;
           

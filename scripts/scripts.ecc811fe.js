@@ -208,7 +208,7 @@ angular.module('promptApp')
 angular.module('promptApp')
   .directive('foot', function () {
     return {
-      template: '<div class="footer">Fork me on <a href="http://github.com/whenther/prompt"><span class="fa fa-github"></span> Github</a></div>',
+      templateUrl: 'views/templates/foot.html',
       restrict: 'E'
     };
   });

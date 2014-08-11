@@ -28,7 +28,16 @@ img {
 .right{float: right;}
 
 // Footer
-.footer {height: 60px;}
+.footer {
+    height: 60px;
+    
+    @media only screen and (min-width : $screen-md-min) {
+        .right-foot {
+            float: right;
+            text-align: right;
+        }
+    }
+}
 
 // Input
 input.ng-invalid.ng-dirty {

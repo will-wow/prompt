@@ -74,6 +74,7 @@
             <img src="images/basic.svg" alt="basic art" class="svg-icon">
         </div>
     </div>
+    
     <hr/>
     <div class="row"><div class="col-sm-12">
             <h2>Advanced features</h2>
@@ -82,8 +83,12 @@
                 saving an entire song list or moving things between devices, read on!</p>
         </div>
     </div>
+    
     <hr/>
     <div class="row">
+        <div class="col-sm-4 img-container">
+            <img src="images/upload.svg" alt="upload art" class="svg-icon">
+        </div>
         <div class="col-sm-8 col-sm-push-4">
             <h3>Upload</h3>
             <p>The easiest way to add a file is to do it manually, pasting in the name,
@@ -101,32 +106,44 @@
                 at a time. If you need to upload a lot, do it on a computer, and import
                 the data (see below).</p>
         </div>
-        <div class="col-sm-4 col-sm-pull-8 img-container">
-            <img src="images/upload.svg" alt="upload art" class="svg-icon">
-        </div>
+        
     </div>
+    
     <hr/>
     <div class="row">
+        <div class="col-sm-4 img-container img-container-right">
+            <img src="images/notes.svg" alt="notes art" class="svg-icon">
+        </div>
         <div class="col-sm-8">
             <h3>Uploading Notes</h3>
-            <p>If you want to move your files between devices you have a couple options.
-                If you keep everything as separate text files, you can just re-upload them
-                on each device. To make things every easier, you can create an export file
-                of everything, and then import that onto your other device.
-                <br/>
-                <br/>To do that, go to the Import/Export page, and click Export on the device
-                you want to export from. This will create a prompt_export.json file. Save
-                that file in Dropbox or Google Drive, or email it to yourself, and Import
-                in on your second device. When import is complete, the second device will
-                have all your stuff!</p>
-        </div>
-        <div class="col-sm-4 img-container img-container-right">
-            <img src="images/port.svg" alt="import-export art" class="svg-icon">
+            <p>Prompt makes it easy to embed notes in your text files. Anywhere
+                in your text file, put "==PROMPT NOTES==" before the 
+                notes, and "==NOTES END==" after. Make sure these are each
+                by themselves on their own lines. Inside, you can put as much
+                text as you want, and it'll all get pulled out of the main 
+                body and into the notes section during upload. Just make sure
+                that, if you also include a JSON block, that still comes last.
+            </p>
+            <p>
+                You can include as many note blocks as you want, and each one 
+                will be separated by a horizontal line in the notes section.
+                This makes it easy to add basic info to the top of your file,
+                and append more notes at the bottom.
+            </p>
+            <p>
+                You can also add sections that won't get imported at all during
+                upload. To do that, just surround the skippable text with 
+                "==PROMPT SKIP==" and "==END SKIP==".
+            </p>
         </div>
     </div>
+    
     <hr/>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4 img-container">
+            <img src="images/data.svg" alt="data art" class="svg-icon">
+        </div>
+        <div class="col-sm-8 col-sm-push-4">
             <h3>Upload Data</h3>
             <p>Uploading files is great, but you have to manually add times and change
                 names to each one. To save that kind of data in your text files, you can
@@ -147,13 +164,14 @@
                 <br/>If prompt finds this at the bottom of an uploaded file, it will use the
                 data, and the JSON won't show up in the body.</p>
         </div>
-        <div class="col-sm-4 img-container img-container-right">
-            <img src="images/data.svg" alt="data art" class="svg-icon">
-        </div>
     </div>
+    
     <hr/>
     <div class="row">
-        <div class="col-sm-8 col-sm-push-4">
+        <div class="col-sm-4 img-container img-container-right">
+            <img src="images/port.svg" alt="import-export art" class="svg-icon">
+        </div>
+        <div class="col-sm-8">
             <h3>Import Export</h3>
             <p>If you want to move your files between devices you have a couple options.
                 If you keep everything as separate text files, you can just re-upload them
@@ -165,9 +183,6 @@
                 that file in Dropbox or Google Drive, or email it to yourself, and Import
                 in on your second device. When import is complete, the second device will
                 have all your stuff!</p>
-        </div>
-        <div class="col-sm-4 col-sm-pull-8 img-container">
-            <img src="images/port.svg" alt="import-export art" class="svg-icon">
         </div>
     </div>
 </div>

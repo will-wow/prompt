@@ -271,6 +271,7 @@ angular.module('promptApp').directive('scrollable', function() {
                 timeStart = 0,
                 timeElapsed = 0,
                 scrollContainer = $element.find('#body-container'),
+                notesContainer = $element.find('#notes-container'),
                 scrollBody = scrollContainer.find('#body'),
 
                 // Clear the timers
@@ -310,7 +311,7 @@ angular.module('promptApp').directive('scrollable', function() {
             };
             
             // Pause the scrolling
-            scope.pause = function() {
+            scope.pause = function(cb) {
                 scope.paused = true;
                 
                 scrollContainer.scrollTop(scrollContainer.scrollTop(), 1)
@@ -319,6 +320,9 @@ angular.module('promptApp').directive('scrollable', function() {
                         timeElapsed = Date.now() - timeStart;
                     else
                         timeElapsed = 0;
+                    
+                    // Run the callback
+                    if (cb) cb();
                 });
                 
             };
@@ -332,6 +336,22 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.scrollStarted = function () {
                 // if started, not done
                 return !!timeStart;
+            };
+            
+            // Toggle the notes section
+            scope.notesToggle = function (time) {
+                // Toggle the open/closed classes
+                notesContainer.toggleClass('open');
+                scrollContainer.toggleClass('half');
+                
+                // Pause & restart scrolling
+                // This will update the scroll speed & target for the new
+                // body length
+                if (scope.scrollStarted()) {
+                    scope.pause(function () {
+                       scope.play(time); 
+                    });
+                }
             };
         },
         controllerAs: 'scroller'
@@ -410,6 +430,7 @@ angular.module('promptApp').factory('Resettable', function Resettable() {
  */
 angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$upload', '$q', 'Prompts', 'Prompt', function($scope, $location, $upload, $q, Prompts, Prompt) {
     var scope = this,
+        // Returns a reader onLoad function
         readerOnLoad = (function (i, fileCount, file, reader, prompt) {
             return function (e) {
                 // Populate the prompt object
@@ -418,7 +439,7 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                 prompt.time = 0;
                 
                 // Add info from any included JSON
-                addInfoFromJSON(prompt);
+                parseBody(prompt);
                 
                 // Add the new prompt to the Prompts array
                 Prompts.add(prompt)
@@ -426,21 +447,14 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
                     // If this is the last file, note that in the scope
                     if (i === fileCount-1) {
                         scope.uploadStatus = scope.uStats.DONE;
-                        //$scope.$apply();
                     } 
                 });
             };
         });
     
-    // Check if a string is JSON
-    function tryToParseJSON(text) {
-        try {
-            return JSON.parse(text);
-        } catch (e) {
-            return false;
-        }
-    }
-    
+    //==========================================================================
+    // INFO PULLER FUNCTIONS ===================================================
+    //==========================================================================
     /**
      * Convert a time string to ms
      */
@@ -475,20 +489,124 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
         time =  '00:00';
       }
       
-      //====================================================================
+      //===================
       // Return time in ms
-      //====================================================================
+      //===================
       return Date.parse("01 Jan 1970 " + time + " UTC");
     }
     
+    // Split the body text at newlines
+    function splitBody(body) {
+        // Split at newlines
+        var split = body.split('\n');
+        
+        // Make sure to always return an array
+        if (!Array.isArray(split)) {
+            split = [split];
+        }
+        
+        // return
+        return split;
+    }
+    
+    // Pull out note sections
+    function pullNotes(lines, stopAt) {
+        // Holds concatenated text
+        var bodyText = '',
+            noteText = '',
+            
+            // Skip block
+            inSkip = false,
+            SKIP_START  = '==PROMPT SKIP==',
+            SKIP_END    = '==END SKIP==',
+            // Notes block
+            inNotes = false,
+            NOTES_START = '==PROMPT NOTES==',
+            NOTES_END   = '==END NOTES==';
+        
+        // Loop through body (before stopat)
+        for (var i=0; i < stopAt; i++) {
+            var line = lines[i];
+            
+            //================================
+            // SKIP BLOCK ====================
+            //================================
+            if (inSkip) {
+                if (line.trim() === SKIP_END) {
+                    inSkip = false;
+                }
+            
+            //================================
+            // NOTES BLOCK ===================
+            //================================
+            } else if (inNotes) {
+                if (line.trim() === NOTES_END) {
+                    // If this line ends the notes block
+                    
+                    // set inNotes flag
+                    // Don't write this line to anything
+                    inNotes = false;
+                } else {
+                    // Line is still in notes block
+                    
+                    // Write to bodyText
+                    noteText += line;
+                }
+            
+            //================================
+            // REGULAR TEXT ==================
+            //================================
+            } else {
+                // START NOTES BLOCK
+                if (line.trim() === NOTES_START) {
+                    // If this line starts a notes block
+                    
+                    // Check if there are notes already
+                    if (noteText) {
+                        // If there are, add an <hr/>
+                        noteText += '<hr/>\n';
+                    }
+                    // set inNotes flag
+                    // Don't write this line to anything
+                    inNotes = true;
+                // START SKIP BLOCK
+                } else if (line.trim() === SKIP_START) {
+                    // If this line starts a SKIP block
+                    
+                    // set inSkip flag
+                    // Don't write this line to anything
+                    inSkip = true;
+                } else {
+                    // if line is regular text
+                    
+                    // Write to bodyText
+                    bodyText += line;
+                }
+            }
+        }
+        
+        // When done, return both strings
+        return {
+            body:  bodyText.trim(),
+            notes: noteText.trim()
+        };
+    }
+    
+    // Check if a string is JSON
+    function tryToParseJSON(text) {
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return false;
+        }
+    }
+    
     // Look for and pull out JSON from body text
-    function findJSON(body) {
+    function pullJSON(lines) {
         // Split into array of lines
-        var lines = body.split('\n'),
-            i, info, jsonFound = false,
+        var i, info,
             linesChecked = '',
-            otherLines = '',
-            returnObj;
+            notFoundReturn = {};
         
         // Loop through each line
         for (i = lines.length-1; i >= 0; i--) {
@@ -496,63 +614,69 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
             // Note that it starts at the bottom, and works its way up
             // So it add the new line first
             
-            if (jsonFound) {
-                otherLines = lines[i] + otherLines;
-            } else {
-                // Build new string to try
-                linesChecked = lines[i] + linesChecked;
+
+            // Build new string to try
+            linesChecked = lines[i] + linesChecked;
+        
+            // Try to convert it to JSON
+            info = tryToParseJSON(linesChecked);
             
-                // Try to convert it to JSON
-                info = tryToParseJSON(linesChecked);
-                
-                // If it worked, that's the json tag
-                // Otherwise continue looping
-                if (info) {
-                    // Build the return object
-                    returnObj = {
-                        // Flag that JSON found
-                        hasJSON : true,
+            // If it worked, that's the json object
+            // Otherwise continue looping
+            if (info) {
+                // Make sure it's a PROMPT json object (not something else)
+                if (info.PROMPT) {
+                    // Return the json
+                    // And the line# the JSON starts at
+                    return {
                         // Return the JSON object
-                        json    : info,
-                        // Return the line split at, 
-                        // So another function can remove the JSON text
-                        splitAt : i
+                        json    : info.PROMPT,
+                        // Return the first line# of JSON
+                        // So the next function knows where to stop
+                        stopAt : i
                     };
-                    // Set the jsonFound flag
-                    jsonFound = true;
+                } else {
+                    // If it's not a PROMPT JSON object, return as if not found
+                    return notFoundReturn;
                 }
-                
             }
         }
-        // If JSON was found
-        if (jsonFound) {
-            // Add in the rest of the body to the return object
-            // Trim off any trailing whitespace
-            returnObj.body = otherLines.trim();
-        } else {
-            // Just set the hasJSON flag as false
-            returnObj = {hasJSON: false};
-        }
         
-        // Return
-        return returnObj;
+        // If the code gets here, JSON not found
+        return notFoundReturn;
     }
     
-    // Find JSON info, and add it to the prompt
-    function addInfoFromJSON(prompt) {
-        var jsonChecked = findJSON(prompt.body);
+    // Find JSON info and Notes blocks, and pull them from the main body
+    function parseBody(prompt) {
+        var lines = splitBody(prompt.body),
+            // Search for and pull out JSON and notes
+            jsonPulled      = pullJSON(lines),
+            notesPulled     = pullNotes(lines, jsonPulled.stopAt || lines.length),
+            // Grab the pulled objects
+            info            = jsonPulled.json,
+            notes           = notesPulled.notes;
         
-        if (jsonChecked.hasJSON) {
-            var info = jsonChecked.json;
+        // Check if anything was found. If not, do nothing
+        if (info || notes) {
+            // Merge JSON info into Prompt
+            if (info) {
+                prompt.name = info.name             || prompt.name;
+                prompt.time = timeToMs(info.time)   || prompt.time;
+            }
             
-            // Merge info into prompt
-            prompt.name = info.name             || prompt.name;
-            prompt.time = timeToMs(info.time)   || prompt.time;
-            prompt.notes= info.notes            || prompt.notes;
-            prompt.body = jsonChecked.body      || prompt.body;
+            // Merge notes info into Prompt
+            if (notes) {
+                prompt.notes = notes;
+            }
             
+            // Since pullNotes stripped out the JSON, use its body either way
+            prompt.body = notesPulled.body;
         }
     }
+    
+    //==========================================================================
+    // SCOPE ===================================================================
+    //==========================================================================
     
     // Status Types
     scope.uStats = {

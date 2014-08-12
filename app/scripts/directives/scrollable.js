@@ -15,6 +15,7 @@ angular.module('promptApp').directive('scrollable', function() {
                 timeStart = 0,
                 timeElapsed = 0,
                 scrollContainer = $element.find('#body-container'),
+                notesContainer = $element.find('#notes-container'),
                 scrollBody = scrollContainer.find('#body'),
 
                 // Clear the timers
@@ -54,7 +55,7 @@ angular.module('promptApp').directive('scrollable', function() {
             };
             
             // Pause the scrolling
-            scope.pause = function() {
+            scope.pause = function(cb) {
                 scope.paused = true;
                 
                 scrollContainer.scrollTop(scrollContainer.scrollTop(), 1)
@@ -63,6 +64,9 @@ angular.module('promptApp').directive('scrollable', function() {
                         timeElapsed = Date.now() - timeStart;
                     else
                         timeElapsed = 0;
+                    
+                    // Run the callback
+                    if (cb) cb();
                 });
                 
             };
@@ -76,6 +80,22 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.scrollStarted = function () {
                 // if started, not done
                 return !!timeStart;
+            };
+            
+            // Toggle the notes section
+            scope.notesToggle = function (time) {
+                // Toggle the open/closed classes
+                notesContainer.toggleClass('open');
+                scrollContainer.toggleClass('half');
+                
+                // Pause & restart scrolling
+                // This will update the scroll speed & target for the new
+                // body length
+                if (scope.scrollStarted()) {
+                    scope.pause(function () {
+                       scope.play(time); 
+                    });
+                }
             };
         },
         controllerAs: 'scroller'

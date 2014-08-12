@@ -7,5 +7,9 @@
     <!-- Info -->
     <input type="text" ng-model="new.prompt.name" placeholder="Name" class="form-control name" required>
     <input type="text" placeholder="Length in hr:min:sec" class="form-control time" min="1" ms-time="new.prompt.time" required>
-    <textarea ng-model="new.prompt.body" placeholder="Paste your text here." class="form-control body" full-height required></textarea>
+    <div id="containers" full-height>
+        <textarea ng-model="new.prompt.body" placeholder="Paste your text here." class="form-control body" required></textarea>
+        <textarea ng-model="new.prompt.notes" placeholder="Paste your notes here." class="form-control notes"></textarea>
+    </div>
+    
 </form>

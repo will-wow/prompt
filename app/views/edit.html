@@ -13,5 +13,8 @@
     <!-- Info -->
     <input type="text" ng-model="edit.prompt.name" placeholder="Name" class="form-control name" name="name" required>
     <input type="text" ms-time="edit.prompt.time" placeholder="Length in hr:min:sec" class="form-control time" name="time" min="1" required>
-    <textarea ng-model="edit.prompt.body" placeholder="Body." class="form-control body" full-height name="body" required></textarea>
+    <div id="containers" full-height>
+        <textarea ng-model="edit.prompt.body" placeholder="Body." class="form-control body" name="body" required></textarea>
+        <textarea ng-model="edit.prompt.notes" placeholder="Notes." class="form-control notes" name="notes"></textarea>
+    </div>
 </form>

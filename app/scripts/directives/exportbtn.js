@@ -23,7 +23,8 @@ angular.module('promptApp')
           // Get the current date to append to the filename (for ordering and non-cacheing)
           var d               = new Date(),
           // Make the date filename-safe
-              dateString      = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+'-'+d.getHours()+'-'+d.getMinutes();
+          // Note that javascript months start at 0
+              dateString      = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'-'+d.getHours()+'-'+d.getMinutes();
           
           return ('prompt_export_' + dateString + '.json');
         }

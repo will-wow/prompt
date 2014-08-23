@@ -22,6 +22,19 @@ angular.module('promptApp').directive('scrollable', function() {
                 clearTime = function() {
                     timeStart = 0;
                     scope.paused = false;
+                },
+                sleepPreventer = {
+                    // interval variable
+                    stayAwake: null,
+                    start: function () {
+                        setInterval(function () {
+                            location.href = location.href; //try refreshing
+                            window.setTimeout(window.stop, 0); //stop it soon after
+                        }, 30000);
+                    },
+                    stop: function () {
+                        clearInterval(this.stayAwake);
+                    }
                 };
             
             function scroll(time) {
@@ -39,9 +52,11 @@ angular.module('promptApp').directive('scrollable', function() {
                             return t;
                         })
                         .then(function () {
+                            sleepPreventer.stop();
                             scope.paused = true;
                         });
                     } else {
+                        sleepPreventer.stop();
                         scope.paused = true;
                     }
             }
@@ -52,6 +67,7 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.play = function(time) {
                 timeStart = Date.now() - timeElapsed;
                 scroll(time);
+                sleepPreventer.start();
             };
             
             // Pause the scrolling
@@ -65,6 +81,8 @@ angular.module('promptApp').directive('scrollable', function() {
                     else
                         timeElapsed = 0;
                     
+                    sleepPreventer.stop();
+                    
                     // Run the callback
                     if (cb) cb();
                 });
@@ -74,6 +92,7 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.top = function() {
                 scrollContainer.scrollTop(0, 1)
                 .then(clearTime);
+                sleepPreventer.stop();
             };
             
             // Return true if scrolling has started

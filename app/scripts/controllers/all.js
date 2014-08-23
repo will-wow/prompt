@@ -227,6 +227,9 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
     
     // Find JSON info and Notes blocks, and pull them from the main body
     function parseBody(prompt) {
+        // Replace "smart" quotes in body, to allow JSON to always work
+        prompt.body = prompt.body.replace(/[\u201C|\u201D|\u201E]/g, "\"");
+        
         var lines = splitBody(prompt.body),
             // Search for and pull out JSON and notes
             jsonPulled      = pullJSON(lines),

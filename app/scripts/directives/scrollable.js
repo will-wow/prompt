@@ -89,6 +89,14 @@ angular.module('promptApp').directive('scrollable', function() {
                 });
                 
             };
+            
+            scope.pauseToggle = function (time) {
+                if (scope.paused)
+                    scope.pause();
+                else 
+                    scope.play(time);
+            };
+            
             // Clear a pause, go to top
             scope.top = function() {
                 scrollContainer.scrollTop(0, 1)

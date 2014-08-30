@@ -17,6 +17,7 @@ angular.module('promptApp').directive('scrollable', function() {
                 scrollContainer = $element.find('#body-container'),
                 notesContainer = $element.find('#notes-container'),
                 scrollBody = scrollContainer.find('#body'),
+                keepAwakeVideo = $element.find('#keep-awake-video').get(0),
 
                 // Clear the timers
                 clearTime = function() {
@@ -24,16 +25,16 @@ angular.module('promptApp').directive('scrollable', function() {
                     scope.paused = false;
                 },
                 sleepPreventer = {
-                    // interval variable
-                    stayAwake: null,
                     start: function () {
-                        setInterval(function () {
-                            location.href = location.href; //try refreshing
-                            window.setTimeout(window.stop, 0); //stop it soon after
-                        }, 30000);
+                        keepAwakeVideo.play();
+                        // Loop, if the loop tag doesnt work
+                        // Shouldn't do anything otherwise
+                        keepAwakeVideo.addEventListener('ended', function (e) {
+                            keepAwakeVideo.play();
+                        });
                     },
                     stop: function () {
-                        clearInterval(this.stayAwake);
+                        keepAwakeVideo.pause();
                     }
                 };
             

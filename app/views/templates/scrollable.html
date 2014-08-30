@@ -1,4 +1,8 @@
 <form role="form" id="play">
+    <video id='keep-awake-video' style="position: fixed; opacity: 0; top: -1; left: -1;" width=1 height=1 loop>
+      <source src="images/blank_test.mp4" type="video/mp4">
+    </video>
+    
     <div class="button-row">
         <button class="btn btn-success" ng-disabled="scroller.scrollStarted() && !scroller.paused" ng-click="scroller.play(play.prompt.time)"><i class="fa fa-play"></i> Start</button>
         <button class="btn btn-warning" ng-disabled="!scroller.scrollStarted() || scroller.paused" ng-click="scroller.pause()"><i class="fa fa-pause"></i> Pause</button>

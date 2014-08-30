@@ -273,11 +273,25 @@ angular.module('promptApp').directive('scrollable', function() {
                 scrollContainer = $element.find('#body-container'),
                 notesContainer = $element.find('#notes-container'),
                 scrollBody = scrollContainer.find('#body'),
+                keepAwakeVideo = $element.find('#keep-awake-video').get(0),
 
                 // Clear the timers
                 clearTime = function() {
                     timeStart = 0;
                     scope.paused = false;
+                },
+                sleepPreventer = {
+                    start: function () {
+                        keepAwakeVideo.play();
+                        // Loop, if the loop tag doesnt work
+                        // Shouldn't do anything otherwise
+                        keepAwakeVideo.addEventListener('ended', function (e) {
+                            keepAwakeVideo.play();
+                        });
+                    },
+                    stop: function () {
+                        keepAwakeVideo.pause();
+                    }
                 };
             
             function scroll(time) {
@@ -295,9 +309,11 @@ angular.module('promptApp').directive('scrollable', function() {
                             return t;
                         })
                         .then(function () {
+                            sleepPreventer.stop();
                             scope.paused = true;
                         });
                     } else {
+                        sleepPreventer.stop();
                         scope.paused = true;
                     }
             }
@@ -308,6 +324,7 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.play = function(time) {
                 timeStart = Date.now() - timeElapsed;
                 scroll(time);
+                sleepPreventer.start();
             };
             
             // Pause the scrolling
@@ -321,6 +338,8 @@ angular.module('promptApp').directive('scrollable', function() {
                     else
                         timeElapsed = 0;
                     
+                    sleepPreventer.stop();
+                    
                     // Run the callback
                     if (cb) cb();
                 });
@@ -330,6 +349,7 @@ angular.module('promptApp').directive('scrollable', function() {
             scope.top = function() {
                 scrollContainer.scrollTop(0, 1)
                 .then(clearTime);
+                sleepPreventer.stop();
             };
             
             // Return true if scrolling has started
@@ -648,6 +668,9 @@ angular.module('promptApp').controller('AllCtrl', ['$scope', '$location', '$uplo
     
     // Find JSON info and Notes blocks, and pull them from the main body
     function parseBody(prompt) {
+        // Replace "smart" quotes in body, to allow JSON to always work
+        prompt.body = prompt.body.replace(/[\u201C|\u201D|\u201E]/g, "\"");
+        
         var lines = splitBody(prompt.body),
             // Search for and pull out JSON and notes
             jsonPulled      = pullJSON(lines),
@@ -1250,7 +1273,8 @@ angular.module('promptApp')
           // Get the current date to append to the filename (for ordering and non-cacheing)
           var d               = new Date(),
           // Make the date filename-safe
-              dateString      = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+'-'+d.getHours()+'-'+d.getMinutes();
+          // Note that javascript months start at 0
+              dateString      = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'-'+d.getHours()+'-'+d.getMinutes();
           
           return ('prompt_export_' + dateString + '.json');
         }

@@ -10,6 +10,9 @@ angular.module('promptApp')
   .directive('foot', function () {
     return {
       templateUrl: 'views/templates/foot.html',
-      restrict: 'E'
+      restrict: 'E',
+      controller: function () {
+        this.year = new Date().getFullYear();
+      }
     };
   });

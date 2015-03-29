@@ -10,7 +10,7 @@ angular.module('promptApp').directive('scrollable', function() {
     return {
         templateUrl: 'views/templates/scrollable.html',
         restrict: 'E',
-        controller: function($window, $element) {
+        controller: function($scope, $window, $element, settings) {
             var scope = this,
                 timeStart = 0,
                 timeElapsed = 0,
@@ -36,31 +36,30 @@ angular.module('promptApp').directive('scrollable', function() {
                     stop: function () {
                         keepAwakeVideo.pause();
                     }
+                },
+                scroll = function (time) {
+                  var top = 0,
+                      currentTop  = scrollContainer.scrollTop(),
+                      bottom      = (scrollBody.height() + 20) - scrollContainer.height(),
+                      percentLeft = (bottom - (currentTop - top)) / bottom,
+                      timeLeft    = Number(time) * percentLeft;
+
+                      if (bottom >= 0) {
+                          scope.paused = false;
+                          timeStart = Date.now();
+
+                          scrollContainer.scrollTop(bottom, timeLeft, function(t) {
+                              return t;
+                          })
+                          .then(function () {
+                              sleepPreventer.stop();
+                              scope.paused = true;
+                          });
+                      } else {
+                          sleepPreventer.stop();
+                          scope.paused = true;
+                      }
                 };
-
-            function scroll(time) {
-                var top = 0,
-                    currentTop  = scrollContainer.scrollTop(),
-                    bottom      = (scrollBody.height() + 20) - scrollContainer.height(),
-                    percentLeft = (bottom - (currentTop - top)) / bottom,
-                    timeLeft    = Number(time) * percentLeft;
-
-                    if (bottom >= 0) {
-                        scope.paused = false;
-                        timeStart = Date.now();
-
-                        scrollContainer.scrollTop(bottom, timeLeft, function(t) {
-                            return t;
-                        })
-                        .then(function () {
-                            sleepPreventer.stop();
-                            scope.paused = true;
-                        });
-                    } else {
-                        sleepPreventer.stop();
-                        scope.paused = true;
-                    }
-            }
 
             scope.paused = false;
 
@@ -129,6 +128,13 @@ angular.module('promptApp').directive('scrollable', function() {
                     });
                 }
             };
+
+          // Update the font-size when it changes in settings.
+          $scope.$watch(function () {
+            return settings.get('fontSize')
+          }, function (newValue) {
+              scrollBody.css('font-size', newValue);
+          });
         },
         controllerAs: 'scroller'
     };

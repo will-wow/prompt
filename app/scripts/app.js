@@ -53,6 +53,10 @@ angular
         controller: 'RawCtrl',
         controllerAs: 'raw'
       })
+      .when('/settings', {
+        templateUrl: 'views/settings.html',
+        controller: 'SettingsCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

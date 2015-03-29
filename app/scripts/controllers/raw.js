@@ -9,5 +9,5 @@
  */
 angular.module('promptApp')
   .controller('RawCtrl', [function () {
-    var scope = this;
+
   }]);
